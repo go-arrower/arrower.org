@@ -11,15 +11,16 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://your-docusaurus-test-site.com',
+  url: 'https://go-arrower.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: '/arrower.org/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'go-arrower', // Usually your GitHub org/user name.
+  projectName: 'arrower.org', // Usually your repo name.
+  trailingSlash: false, // GitHub pages adds trailing slash to Docusaurus URLs by default. It is recommended to set a trailingSlash config (true or false, not undefined).
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
