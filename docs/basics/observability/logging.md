@@ -16,14 +16,14 @@ Arrower uses `slog.Logger` as an interface for the application.
 It provides its own implementation of `slog.Handler`, to add interesting extra functionalities.
 
 ```go
-logger := arrower.NewLogger()
+logger := alog.New()
 ```
 
-| Environment | Constructor            | Key Features                                                                                               |
-|-------------|------------------------|------------------------------------------------------------------------------------------------------------|
-| production  | `NewLogger`            | <ul><li>Defaults to level `INFO`</li><li>Formats in JSON</li><li>Writes to Stderr</li></ul>                |
-| development | `NewDevelopmentLogger` | <ul><li>Defaults to level `DEBUG`</li><li>Writes text to Stderr</li><li>Sends logs to local loki</li></ul> |
-| testing     | `NewTestLogger`        | <ul><li>Writes text to a given `io.Writer`</li></ul>                                                       |
+| Environment | Constructor      | Key Features                                                                                               |
+|-------------|------------------|------------------------------------------------------------------------------------------------------------|
+| production  | `New`            | <ul><li>Defaults to level `INFO`</li><li>Formats in JSON</li><li>Writes to Stderr</li></ul>                |
+| development | `NewDevelopment` | <ul><li>Defaults to level `DEBUG`</li><li>Writes text to Stderr</li><li>Sends logs to local loki</li></ul> |
+| testing     | `NewTest`        | <ul><li>Writes text to a given `io.Writer`</li></ul>                                                       |
 
 
 
@@ -35,9 +35,9 @@ You can bring and set your own handler(s).
 This gives you more control over your logging needs, compared to one of the default loggers from above. 
 
 ```go
-logger := arrower.NewLogger(
-    arrower.WithHandler(h0),
-    arrower.WithHandler(h1),
+logger := alog.New(
+    alog.WithHandler(h0),
+    alog.WithHandler(h1),
 )
 ```
 
@@ -64,7 +64,7 @@ To conveniently debug issues, the logger supports changing some properties at ru
 The log level will be changed for all handlers, independent of their specific configuration. 
 
 ```go
-LogHandlerFromLogger(logger).SetLevel(slog.LevelDebug)
+alog.Unwrap(logger).SetLevel(slog.LevelDebug)
 ```
 
 

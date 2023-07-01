@@ -26,7 +26,16 @@ To quickstart your development the `docker-compose.yaml` file contains everythin
 and can give inspiration on how to setup your own infrastructure.
 
 <br />
-<br />
 
 <DocCardList />
 
+<br />
+
+:::note Improve Docs
+Show dashboard with some interesting charts & queries
+- Number of http requests
+- Number of application functions called
+- Number of Jobs
+- Average response times
+- Number of failures
+:::
