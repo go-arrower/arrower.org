@@ -144,24 +144,38 @@ You'll have logs, metrics, and traces available for you.
 ## Testing
 As the Job's handlers are just functions you can test them normally, like you would do anyway.
 
-What is remaining is to ensure the right Jobs get enqueued on the editing site.
+What is remaining is to ensure the right Jobs get enqueued on the emitting site.
 For this an in memory implementation of the `jobs.Queue` interface is available, you can use in tests. It comes
 with some additional methods, to make testing easier:
 
+1. Custom assertions for the job queue
 ```go
-// pseudocode => update later
-jq := jobs.NewInMemoryJobs(nil) // if you want to execute => set config
-jq.Count() 
-jq.CountType(type)
-jq.EnqueuedType(type): bool
-jq.WorkOne()
-jq.Start()
-// custom assertions to simplify testing?
-// assert.
-//  emptyQueue()
-//  pushed(type, 2)
+  jq := jobs.NewInMemoryJobs()
+  jassert := jq.Assert(t)
+
+  // asserts the queue is empty
+  jassert.Empty()
+  
+  
+  _ = jq.Enqueue(ctx, myJob{})
+
+  // asserts the queue is not empty
+  jassert.NotEmpty()
+
+  // asserts the queue has exactly one job of type `myJob`
+  jassert.Queued(myJob{}, 1)
+
+  // asserts the queue has 1 job enqueued
+  jassert.QueuedTotal(1)
 ```
 
+2. Custom methods beyond the `jobs.Queue` interface
+```go
+  jq := jobs.NewInMemoryJobs()
+
+  // resets the queue to be empty
+  jq.Reset() 
+```
 
 
 ## UI & Observability
