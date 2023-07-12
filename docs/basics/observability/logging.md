@@ -17,13 +17,15 @@ It provides its own implementation of `slog.Handler`, to add interesting extra f
 
 ```go
 logger := alog.New()
+logger  = alog.NewDevelopment()
+logger  = alog.NewTest(nil)
 ```
 
 | Environment | Constructor      | Key Features                                                                                               |
 |-------------|------------------|------------------------------------------------------------------------------------------------------------|
 | production  | `New`            | <ul><li>Defaults to level `INFO`</li><li>Formats in JSON</li><li>Writes to Stderr</li></ul>                |
 | development | `NewDevelopment` | <ul><li>Defaults to level `DEBUG`</li><li>Writes text to Stderr</li><li>Sends logs to local loki</li></ul> |
-| testing     | `NewTest`        | <ul><li>Writes text to a given `io.Writer`</li></ul>                                                       |
+| testing     | `NewTest`        | <ul><li>Writes text to a given `io.Writer`</li><li>If `nil`, all logs are discarded</li></ul>              |
 
 
 
