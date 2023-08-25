@@ -97,8 +97,8 @@ const config = {
                 to: '/docs/why',
               },
               {
-                label: 'Basics',
-                to: '/docs/basics',
+                label: 'Getting Started',
+                to: '/docs/getting-started',
               }
             ],
           },
