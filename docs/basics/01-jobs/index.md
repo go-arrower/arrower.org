@@ -121,7 +121,7 @@ Arrower supports multiple job queues, but each queue has to be instantiated. If 
 set, the default queue is used.
 
 ```go
-jq, err := jobs.NewGueJobs(alog.NewTest(nil), noop.NewMeterProvider(), trace.NewNoopTracerProvider(), pgHandler.PGx,
+jq, err := jobs.NewPostgresJobs(alog.NewTest(nil), noop.NewMeterProvider(), trace.NewNoopTracerProvider(), pgHandler.PGx,
     jobs.WithQueue("queueName"), // set the name of the queue you want to run
 )
 ```
