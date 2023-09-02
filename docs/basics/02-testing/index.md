@@ -159,7 +159,7 @@ correctly against the real database.
 
 This pattern spins up a postgres database inside a docker container and removes the container after the test has 
 finished automatically.
-The `tests.PrepareTestDatabase` helper will ensure you can safely run all tests in parallel by:
+The `NewTestDatabase` method will ensure you can safely run all tests in parallel by:
 * Creating a new randomly named database for each test case
 * Performing schema migration
 * Seeding the database with test data
@@ -173,28 +173,23 @@ take a look at [multiple tables in one file](https://github.com/go-testfixtures/
 
 package yourpackage_test
 
-var pgHandler *postgres.Handler
+var pgHandler *tests.PostgresDocker
 
 func TestMain(m *testing.M) {
-	handler, cleanup := tests.GetDBConnectionForIntegrationTesting(context.Background())
-	pgHandler = handler
+	pgHandler = tests.NewPostgresDockerForIntegrationTesting()
 
 	//
 	// Run tests
 	code := m.Run()
 
-	//
-	// Cleanup
-	_ = handler.Shutdown(context.Background())
-	_ = cleanup()
-
+	pgHandler.Cleanup()
 	os.Exit(code)
 }
 
 func TestSomething(t *testing.T) {
 	t.Parallel()
 
-	pg := tests.PrepareTestDatabase(pgHandler)
+	pg := pgHandler.NewTestDatabase()
 
 	// use pg to initialise your test dependencies like a postgres repository 
 }
@@ -203,14 +198,16 @@ func TestSomethingOther(t *testing.T) {
 	t.Parallel()
 
 	// load multiple additional test fixture files to seed the database
-	pg := tests.PrepareTestDatabase(pgHandler, []string{
+	pg := pgHandler.NewTestDatabase([]string{
 		"testdata/fixtures/something-other-user.yaml",
 		"testdata/fixtures/something-other-posts.yaml",
     })
+	
+	_ = pg.PGx() // direct access to the pgx connection pool 
 }
 ```
 
 If you depend on other services for your testing use the `tests.StartDockerContainer` helper to start any service 
 inside a docker container.
-Check out the `tests.GetDBConnectionForIntegrationTesting` to see it in action for the testing against a postgres
+Check out the `tests.NewPostgresDockerForIntegrationTesting` to see it in action for the testing against a postgres
 database as shown above.
