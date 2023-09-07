@@ -176,7 +176,7 @@ package yourpackage_test
 var pgHandler *tests.PostgresDocker
 
 func TestMain(m *testing.M) {
-	pgHandler = tests.NewPostgresDockerForIntegrationTesting()
+	pgHandler = tests.GetPostgresDockerForIntegrationTestingInstance()
 
 	//
 	// Run tests
@@ -208,6 +208,7 @@ func TestSomethingOther(t *testing.T) {
 ```
 
 If you depend on other services for your testing use the `tests.StartDockerContainer` helper to start any service 
-inside a docker container.
-Check out the `tests.NewPostgresDockerForIntegrationTesting` to see it in action for the testing against a postgres
+inside a docker container. With `tests.GetDockerContainerInstance` only one docker container is 
+created and returned each time, so that your system and CI does not get swamped with too many containers.
+Check out the `tests.GetPostgresDockerForIntegrationTestingInstance` to see it in action for the testing against a postgres
 database as shown above.
