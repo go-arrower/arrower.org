@@ -71,7 +71,7 @@ type Repository[E any, ID ~string] interface {
 	AllByIDs(context.Context, []ID) ([]E, error)
 	FindAll(ctx context.Context) ([]E, error)
 	FindByID(context.Context, ID) (E, error)
-	FindByIDs(context.Context, []ID) (E, error)
+	FindByIDs(context.Context, []ID) ([]E, error)
 	Exists(context.Context, ID) (bool, error)
 	ExistsByID(context.Context, ID) (bool, error)
 	ExistAll(context.Context, []ID) (bool, error)
