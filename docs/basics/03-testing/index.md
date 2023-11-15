@@ -212,3 +212,9 @@ inside a docker container. With `tests.GetDockerContainerInstance` only one dock
 created and returned each time, so that your system and CI does not get swamped with too many containers.
 Check out the `tests.GetPostgresDockerForIntegrationTestingInstance` to see it in action for the testing against a postgres
 database as shown above.
+
+
+### Docker Images for Integration Testing
+Arrower ships all images you would need to operate and test a setup.
+See [Tasks](./repeating-tasks#postgres-image-with-pg_cron) on how to use the postgres image with a 
+preinstalled `pg_cron` extension already
