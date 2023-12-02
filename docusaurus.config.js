@@ -93,7 +93,7 @@ const config = {
             title: 'Docs',
             items: [
               {
-                label: 'Why',
+                label: 'Why Arrower?',
                 to: '/docs/why',
               },
               {
