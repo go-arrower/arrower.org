@@ -49,106 +49,104 @@ export const Pyramid = () => (
 
 
 
-## Unit Testing
+## Unit Testing With Repository Pattern
 Unit tests come in many forms. Arrower provides you with a set of helpers that make your life easier.
 
 If you're using the repository pattern it is cumbersome to always implement an in memory copy of the repository.
-Use `repo := tests.NewMemoryRepository[Entity, EntityID]()` to generate a repository that comes with a lot of
-often used methods out of the box.
-
-It is implicitly assumed that the entity has a field named `ID` that will be used as primary key.
-Additionally, the ID has to have an underlying type of string and can not be an int.  
-
+Use this helper to get a repository that comes with a lot of often used methods out of the box:
 ```go
-type Repository[E any, ID ~string] interface {
-	NextID(context.Context) ID
+var repo YourRepositoryType = tests.NewMemoryRepository[Entity, EntityID]()
+```
 
-	Create(context.Context, E) error
-	Read(context.Context, ID) (E, error)
-	Update(context.Context, E) error
-	Delete(context.Context, E) error
 
-	All(context.Context) ([]E, error)
-	AllByIDs(context.Context, []ID) ([]E, error)
-	FindAll(ctx context.Context) ([]E, error)
-	FindByID(context.Context, ID) (E, error)
-	FindByIDs(context.Context, []ID) ([]E, error)
-	Exists(context.Context, ID) (bool, error)
-	ExistsByID(context.Context, ID) (bool, error)
-	ExistAll(context.Context, []ID) (bool, error)
-	ExistByIDs(context.Context, []ID) (bool, error)
-	Contains(context.Context, ID) (bool, error)
-	ContainsID(context.Context, ID) (bool, error)
-	ContainsIDs(context.Context, []ID) (bool, error)
-	ContainsAll(context.Context, []ID) (bool, error)
-
-	Count(context.Context) (int, error)
-	Length(context.Context) (int, error)
-	Empty(context.Context) (bool, error)
-	IsEmpty(context.Context) (bool, error)
-
-	Save(context.Context, E) error
-	SaveAll(context.Context, []E) error
-	UpdateAll(context.Context, []E) error
-	Add(context.Context, E) error
-	AddAll(context.Context, []E) error
-
-	DeleteByID(context.Context, ID) error
-	DeleteByIDs(context.Context, []ID) error
-	DeleteAll(context.Context) error
+```go title="memory.repository.go"
+type Repository[E any, ID id] interface {
+    NextID(context.Context) (ID, error)
+    
+    Create(context.Context, E) error
+    Read(context.Context, ID) (E, error)
+    Update(context.Context, E) error
+    Delete(context.Context, E) error
+    
+    All(context.Context) ([]E, error)
+    AllByIDs(context.Context, []ID) ([]E, error)
+    FindAll(ctx context.Context) ([]E, error)
+    FindByID(context.Context, ID) (E, error)
+    FindByIDs(context.Context, []ID) (E, error)
+    Exists(context.Context, ID) (bool, error)
+    ExistsByID(context.Context, ID) (bool, error)
+    ExistAll(context.Context, []ID) (bool, error)
+    ExistByIDs(context.Context, []ID) (bool, error)
+    Contains(context.Context, ID) (bool, error)
+    ContainsID(context.Context, ID) (bool, error)
+    ContainsIDs(context.Context, []ID) (bool, error)
+    ContainsAll(context.Context, []ID) (bool, error)
+    
+    Save(context.Context, E) error
+    SaveAll(context.Context, []E) error
+    UpdateAll(context.Context, []E) error
+    Add(context.Context, E) error
+    AddAll(context.Context, []E) error
+    
+    Count(context.Context) (int, error)
+    Length(context.Context) (int, error)
+    Empty(context.Context) (bool, error)
+    IsEmpty(context.Context) (bool, error)
+    
+    DeleteByID(context.Context, ID) error
+    DeleteByIDs(context.Context, []ID) error
+    DeleteAll(context.Context) error
+    Clear(context.Context) error
 }
+```
+
+It is implicitly assumed that the entity has a field named `ID` with an underlying type of `string` or `int`.
+That field will be used as the primary key.
+You can change the field name:
+```go 
+repo := tests.NewMemoryRepository[E, I](
+	tests.WithIDField("YourPKField"),
+)
 ```
 
 
 ### Extending the Repository
-If you have methods that are not supported out of the box you can embed the repository and implement your missing methods.
+If you have methods that are not supported out of the box,
+you can embed the repository and implement your missing methods.
+[See full example](https://github.com/go-arrower/arrower/blob/master/tests/memory.example_extend_test.go)
 
-```go
-func NewMemoryRepository() *MemoryRepository {
-	return &MemoryRepository{
-		MemoryRepository: tests.NewMemoryRepository[Entity, EntityID](),
-	}
+```go title="memory.example_extend_test.go"
+type UserMemoryRepository struct {
+    *tests.MemoryRepository[User, UserID]
 }
 
-type MemoryRepository struct {
-	*tests.MemoryRepository[Entity, EntityID]
-}
-
-// your custom method
-func (repo *MemoryRepository) FindByLogin(ctx context.Context, login string) (Entity, error) {
-	all, _ := repo.All(ctx)
-
-	for _, e := range all {
-		if e.Login == login {
-			return u, nil
-		}
-	}
-
-	return Entity{}, ErrNotFound
+// FindByLogin implements a custom method, that is not supported by the tests.Repository out of the box.
+func (repo *UserMemoryRepository) FindByLogin(ctx context.Context, login string) (User, error) {
+    all, _ := repo.All(ctx)
+    
+    for _, u := range all {
+        if u.Login == login {
+            return u, nil
+        }
+    }
+    
+    return User{}, tests.ErrNotFound
 }
 ```
 
 ### Overwriting a Method
-You can even fine tune the behaviour of a method, if your requirements demand it.
+You can even fine tune the behaviour of an existing method if your requirements demand it.
+[See full example](https://github.com/go-arrower/arrower/blob/master/tests/memory.example_overwrite_test.go)
 
-```go
-func NewMemoryRepository() *MemoryRepository {
-	return &MemoryRepository{
-		MemoryRepository: tests.NewMemoryRepository[Entity, EntityID](),
-	}
+```go title="memory.example_overwrite_test.go"
+type EntityMemoryRepository struct {
+    *tests.MemoryRepository[Entity, EntityID]
 }
 
-type MemoryRepository struct {
-	*tests.MemoryRepository[Entity, EntityID]
+// Count overwrites the existing Count method with your own implementation.
+func (repo *EntityMemoryRepository) Count(_ context.Context) (int, error) {
+    return -1, nil
 }
-
-func (repo *MemoryRepository) Count(ctx context.Context) (int, error) {
-	return -1, nil
-}
-
-// calling your implementation
-repo := tests.NewMemoryRepository[Entity, EntityID]()
-repo.Count(ctx) // result: -1
 ```
 
 
