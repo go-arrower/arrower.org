@@ -120,12 +120,13 @@ jq, err := jobs.NewPostgresJobs(alog.NewNoopLogger(), noop.NewMeterProvider(), n
 
 Each queue can be configured with these optional options. 
 
-| Option             | Default       | Behaviour                                            |
-|--------------------|---------------|------------------------------------------------------|
-| `WithQueue`        | `<empty>`     | Set the name of the queue                            |
-| `WithPollInterval` | 5 seconds     | Set the interval to query the database for new jobs. |
-| `WithPoolSize`     | 10            | Set the amount of workers                            |
-| `WithPoolName`     | a random name | Set the a name for this worker pool instance         |
+| Option                    | Default              | Behaviour                                            |
+|---------------------------|----------------------|------------------------------------------------------|
+| `WithQueue`               | `<empty>`            | Set the name of the queue                            |
+| `WithPollInterval`        | 5 seconds            | Set the interval to query the database for new jobs. |
+| `WithPoolSize`            | 10                   | Set the amount of workers                            |
+| `WithPoolName`            | a random name        | Set the a name for this worker pool instance         |
+| `WithWorkerPollStrategy`  | PriorityPollStrategy | Set the  poll strategy                               |
 
 The queue is instrumented to give you [observability](./observability) out of the box. 
 You'll have logs, metrics, and traces available for you.
