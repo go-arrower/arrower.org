@@ -33,7 +33,7 @@ type Enqueuer interface {
 type Queue interface {
 	Enqueuer
 
-	RegisterJobFunc(JobFunc) error
+	RegisterJobFunc(func (ctx context.Context, job Job) error) error
 	Shutdown(context.Context) error
 }
 ```
@@ -50,7 +50,7 @@ Key characteristics
 
 
 
-## Enqueue & Schedule Jobs
+## Enqueue Jobs
 ```go
 var jq jobs.Enqueuer
 
@@ -62,17 +62,9 @@ _ = jq.Enqueue(ctx, []myJob{{Payload: 1}, {Payload: 2}})
 
 // enqueue multiple jobs of different kinds
 _ = jq.Enqueue(ctx, []any{myJob{Payload: 1}, otherJob{}})
-
-
-// --- ---
-type myJob struct {
-    Payload int
-}
-
-type otherJob struct{}
 ```
 
-See working example: [https://github.com/go-arrower/arrower/blob/master/jobs/jobs.business_test.go](https://github.com/go-arrower/arrower/blob/master/jobs/jobs.business_test.go)
+[See working example](https://github.com/go-arrower/arrower/blob/master/jobs/jobs.business_test.go)
 
 * If the `ctx` contains a transaction, it is used to persist the job to the database. 
   Keeping your job consistent with your application data.
@@ -121,7 +113,7 @@ Arrower supports multiple job queues, but each queue has to be instantiated. If 
 set, the default queue is used.
 
 ```go
-jq, err := jobs.NewPostgresJobs(alog.NewTest(nil), noop.NewMeterProvider(), trace.NewNoopTracerProvider(), pgHandler.PGx,
+jq, err := jobs.NewPostgresJobs(alog.NewNoopLogger(), noop.NewMeterProvider(), noop.NewTracerProvider(), pgHandler.PGx,
     jobs.WithQueue("queueName"), // set the name of the queue you want to run
 )
 ```
@@ -150,28 +142,31 @@ with some additional methods, to make testing easier:
 
 1. Custom assertions for the job queue
 ```go
-  jq := jobs.NewInMemoryJobs()
+  jq := jobs.NewTestingJobs()
   jassert := jq.Assert(t)
 
   // asserts the queue is empty
   jassert.Empty()
-  
-  
+
   _ = jq.Enqueue(ctx, myJob{})
 
   // asserts the queue is not empty
   jassert.NotEmpty()
 
-  // asserts the queue has exactly one job of type `myJob`
+  // asserts the queue has exactly one Job of type `myJob`
   jassert.Queued(myJob{}, 1)
 
-  // asserts the queue has 1 job enqueued
+  // asserts the queue has 1 Job enqueued
   jassert.QueuedTotal(1)
 ```
 
-2. Custom methods beyond the `jobs.Queue` interface
+2. Custom test helpers beyond the `jobs.Queue` interface
 ```go
-  jq := jobs.NewInMemoryJobs()
+  jq := jobs.NewTestingJobs()
+
+  // get a Job without processing it, to assert Job details.
+  job := queue.GetFirstOf(myJob{}).(myJob)
+  assert.Equal(t, "myName", job.Name)
 
   // resets the queue to be empty
   jq.Reset() 
@@ -180,6 +175,10 @@ with some additional methods, to make testing easier:
 
 ## UI & Observability
 
-:::note Improve Docs
-show traces in job funcs
-:::
+See [Observability for more details](/docs/basics/observability)
+
+<img src={require('./queue-otel-tracing.png').default} />
+
+- Jobs integrate with the observability setup of arrower
+- The originating span is persisted and referenced in each Job run
+- Failing Job runs are marked and retried automatically
