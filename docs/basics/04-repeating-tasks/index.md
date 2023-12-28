@@ -7,16 +7,16 @@ sidebar_position: 1
 
 # Repeating Tasks
 
-If you want to run repeating tasks arrower utilises [pg_cron](https://github.com/citusdata/pg_cron)
+If you want to run repeating tasks, arrower utilises [pg_cron](https://github.com/citusdata/pg_cron).
 
 :::tip
-TODO Link to the arch vision of utilising postgres as much as possible
+TODO Link to the architectural vision of utilising postgres as much as possible
 :::
 
 
 
 ## Scheduling Tasks
-Also consult the official documentation of pg_cron.
+Also consult the [official documentation](https://github.com/citusdata/pg_cron) of pg_cron.
 
 ```sql
 -- Delete old data on Saturday at 3:30am (GMT)
@@ -82,18 +82,25 @@ An easy way to create a cron schedule is: [crontab.guru](http://crontab.guru/).
 The repeating tasks introduced above rely on and execute SQL statements only. 
 In some cases this might be to limiting for your needs.
 If you need to execute more complex business logic, use the cron to insert a row into the jobs table. 
-This way the [Jobs](./jobs) system is taking over, allowing you to perform any kind of operation without the limits of SQL.
+This way the [Jobs](./jobs#inserting-jobs-into-the-database) system is taking over,
+allowing you to perform any kind of operation without the limits of SQL.
 
-:::note
-TODO: show how to insert into gue_jobs table
-:::
+```sql
+SELECT cron.schedule('your-custom-cron', '* * * * *',
+$$INSERT INTO gue_jobs(job_id, created_at, updated_at, run_at, queue, job_type, priority, args)
+VALUES (
+generate_ulid_text(), now(), now(), now(),
+'', 'SomeJob', 0,
+(json_build_object('jobData', '{}') #>> '{}')::BYTEA);$$);
+```
 
 
 
 
 ## Postgres Image With pg_cron
 
-You can use any (managed) database that has the pg_cron extension. Alternativly, use the docker image `ghcr.io/go-arrower/postgres`
+You can use any (managed) database that has the pg_cron extension installed.
+Alternatively, use the docker image `ghcr.io/go-arrower/postgres`
 
 ```shell
 docker pull ghcr.io/go-arrower/postgres:latest
@@ -102,13 +109,14 @@ docker pull ghcr.io/go-arrower/postgres:latest
 The image installs the extension into the default database `postges` and makes it available to your database, 
 as if it was installed there.
 
-The image is regenerated every week, so that you might have the latest version of postgres and it's base image available to you.
+The image is regenerated every week, so that you might have the latest version of postgres and its base image available to you.
 
 :::note
-Link ADL on why this is. Testing and limitations of pg_cron
+Link ADL on why this is. 
+Testing and limitations of pg_cron
 :::
 
-If you want to use the cron from a different user or database you might have to fine tune your setup:
+If you want to use the cron from a different user or database, you might have to fine-tune your setup:
 1. Ensure your user can access the cron schema:
 ```sql
 -- Inside the database where pg_cron is installed:
@@ -116,4 +124,4 @@ If you want to use the cron from a different user or database you might have to 
 GRANT USAGE ON SCHEMA cron TO your_username;
 ```
 2. The arrower migrations assume pg_cron is installed in the database `postgres` if this is not the case
-update the database used in the migrations, see `create_pg_cron_extension.up.sql` 
+update the database used in the migrations, see [create_pg_cron_extension.up.sql](https://github.com/go-arrower/arrower/blob/master/postgres/migrations/000002_create_pg_cron_extension.up.sql) 
