@@ -206,9 +206,13 @@ func TestSomethingOther(t *testing.T) {
 }
 ```
 
+The `PrepareDatabase` method is similar to `NewTestDatabase` but does not create a new database
+but cleans the existing database! 
+- All data is truncated
+- It cannot be used in parallel
+
 If you depend on other services for your testing use the `tests.StartDockerContainer` helper to start any service 
-inside a docker container. With `tests.GetDockerContainerInstance` only one docker container is 
-created and returned each time, so that your system and CI does not get swamped with too many containers.
+inside a docker container.
 Check out the `tests.GetPostgresDockerForIntegrationTestingInstance` to see it in action for the testing against a postgres
 database as shown above.
 
