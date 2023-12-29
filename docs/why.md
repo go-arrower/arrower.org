@@ -85,21 +85,3 @@ It will accept contributions later on.
 And licencing will be looked at.
 
 **Feedback on the concepts, goals, and abstractions is very welcome!**
-
-
-
-# Why Choose Arrower?
-
-Developing web applications can be both easier and more challenging over time. While tools like WordPress have simplified the process, the increasing requirements and expectations make it difficult to build web apps without the right framework.
-
-The Go community has always been skeptical of frameworks, but for small to mid-sized projects, manual configuration and repetitive tasks can hinder progress. Arrower aims to address these issues by providing a complete framework for Go web applications.
-
-With Arrower, you can:
-
-    Focus on the application and user goals, rather than getting caught up in technical concerns.
-    Write clean and maintainable code with built-in helpers for common tasks.
-    Benefit from a full-stack solution, from operations to frontend development, reducing reliance on npm and JS.
-    Scale your codebase, from simple side projects to robust SaaS applications, while staying focused on your domain.
-    Enjoy simplicity and proven experience, leveraging best practices from the Go community.
-
-Don't let the lack of code contributions or licensing deter you. Arrower is open to feedback on its concepts, goals, and abstractions to ensure it aligns with your needs.
