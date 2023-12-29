@@ -87,10 +87,10 @@ allowing you to perform any kind of operation without the limits of SQL.
 
 ```sql
 SELECT cron.schedule('your-custom-cron', '* * * * *',
-$$INSERT INTO gue_jobs(job_id, created_at, updated_at, run_at, queue, job_type, priority, args)
+$$INSERT INTO arrower.gue_jobs(job_id, created_at, updated_at, run_at, queue, job_type, priority, args)
 VALUES (
-generate_ulid_text(), now(), now(), now(),
-'', 'SomeJob', 0,
+generate_ulid(), now(), now(), now(),
+'', 'MyJob', 0,
 (json_build_object('jobData', '{}') #>> '{}')::BYTEA);$$);
 ```
 

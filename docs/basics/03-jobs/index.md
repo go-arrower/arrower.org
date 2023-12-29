@@ -83,12 +83,12 @@ _ = jq.Enqueue(ctx, myJob{}, jobs.WithPriority(-1))
 
 ### Inserting Jobs into the Database
 ```sql
-INSERT INTO gue_jobs(job_id, created_at, updated_at, run_at, queue, job_type, priority, args)
-VALUES (generate_ulid_text(), now(), now(), now(),
-        '', 'MyJob', 0
+INSERT INTO arrower.gue_jobs(job_id, created_at, updated_at, run_at, queue, job_type, priority, args)
+VALUES (generate_ulid(), now(), now(), now(),
+        '', 'MyJob', 0,
         (json_build_object(
-            'JobData', '{}'
-         ) #>> '{}')::BYTEA, -- JSON can not be converted to BYTEA: convert to TEXT first
+            'jobData', '{}'
+         ) #>> '{}')::BYTEA -- JSON can not be converted to BYTEA: convert to TEXT first
         );
 ```
 
