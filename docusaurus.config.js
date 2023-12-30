@@ -112,13 +112,17 @@ const config = {
             title: 'Community',
             items: [
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/arrower',
-              },
-              {
                 label: 'Twitter',
                 href: 'https://twitter.com/arrower_org',
               },
+              {
+                label: 'Discord',
+                href: 'https://discord.gg/3Aukzde8Sg',
+              },
+              // {
+              //   label: 'Stack Overflow',
+              //   href: 'https://stackoverflow.com/questions/tagged/arrower',
+              // },
             ],
           },
           {
