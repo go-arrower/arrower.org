@@ -124,4 +124,4 @@ If you want to use the cron from a different user or database, you might have to
 GRANT USAGE ON SCHEMA cron TO your_username;
 ```
 2. The arrower migrations assume pg_cron is installed in the database `postgres` if this is not the case
-update the database used in the migrations, see [create_pg_cron_extension.up.sql](https://github.com/go-arrower/arrower/blob/master/postgres/migrations/000002_create_pg_cron_extension.up.sql) 
+update the database used in the migrations, see [create_pg_cron_extension.up.sql](https://github.com/go-arrower/arrower/blob/master/postgres/migrations/000003_create_pg_cron_extension.up.sql) 
