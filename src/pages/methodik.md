@@ -189,7 +189,7 @@ Prevent from skipping failing tests, as this lays the ground for more behaviour 
 
 
 #### Testing is a Mindset
-<img src={require('./methodik_tester.png').default} alt="Testing is a mindset"/>
+<img src={require('./methodik_tester.jpg').default} alt="Testing is a mindset"/>
 
 
 
