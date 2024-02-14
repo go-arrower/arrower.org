@@ -89,7 +89,7 @@ func TestNew(t *testing.T) {
 
 Use the linter `testpackage` to ensure always testing the api as a system under test.
 
-Whitebox testing has its pace, use it where necessary. 
+Whitebox testing has its place, use it where necessary. 
 E.g. when the complexity of the functions warrants it. 
 The main goal is support easy refactoring.
 Consider a naming schema for test files that use whitebox testing by adding a `_wb_test.go` postfix. 
@@ -200,7 +200,7 @@ Prevent from skipping failing tests, as this lays the ground for more behaviour 
 * Localise your tests, to keep them easy to read and debug in case of failure (over clever function calling in other files ect... prevent mental context building)
 * Unconfigurable behaviour is a point of issue for tests => make structs configurable
   * If you don't want to export: make the fields private and use whitebox testing
-  * `Test bool` so e.g. web app can pauth login as same person
+  * `Test bool` so e.g. web app can pass auth login as same person (investigate if this is really a good idea in terms of security?)
 * DeepEqual alternatives
 * TODO: create helper in tests to ensure Fields do not change unknowingly when mapping structs between layers (with golden file as reference)
 * Test data generation (?)
@@ -208,8 +208,7 @@ Prevent from skipping failing tests, as this lays the ground for more behaviour 
 Zim Notes on testing
 What to test and what not to test? e.g. controller
 
-Testing as a mindset: img tester vs developer
-
 ### Resources
 [1] https://www.youtube.com/watch?v=8hQG7QlcLBk - Advanced Testing with Go by Hashimoto 2017\
-[2] https://www.reddit.com/r/golang/comments/vfxs3u/beyond_hashimotos_advanced_testing_with_go/ - 2022 updates to [1]
+[2] https://www.reddit.com/r/golang/comments/vfxs3u/beyond_hashimotos_advanced_testing_with_go/ - 2022 updates to [1]\
+[3] https://quii.gitbook.io/learn-go-with-tests/ - Introduction into TDD and ideas on how to test complicated things like io or time
