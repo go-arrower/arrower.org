@@ -191,6 +191,6 @@ See [Observability for more details](/docs/basics/observability)
 
 <img src={require('./queue-otel-tracing.png').default} />
 
-- Jobs integrate with the observability setup of arrower
+- Jobs integrate with the observability setup of Arrower
 - The originating span is persisted and referenced in each Job run
 - Failing Job runs are marked and retried automatically

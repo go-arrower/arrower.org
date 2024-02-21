@@ -48,6 +48,38 @@ go tool cover -func cover.out | grep total:
 ```
 
 
+#### Testing Pyramid
+The style, completeness, and number of test cases might also depend on which phase your project is in at any given point, 
+while prototyping you will want to employ a different testing strategy than when you're maintaining an application.
+
+export const Pyramid = () => (
+<div>
+    <img src={require('./pyramid.png').default}
+         alt="schema of testing pyramid"
+         style={{
+            width: '60%',
+            float: 'right',
+    }} />
+    <span>
+        Arrower is using the following terminology,
+        and the picture at the right is only a sketch of the dynamics of the testing pyramid. 
+        <br/>
+        <br/>
+        <ul>
+            <li>Manual</li>
+            <li>UI</li>
+            <li>E2E</li>
+            <li>Integration</li>
+            <li>Unit</li>
+        </ul>
+    </span>
+    <div style={{clear:'both'}}></div>
+</div>
+);
+
+<Pyramid></Pyramid>
+
+
 #### Definition of Unit Under Test
 Answering this question for you will direct your efforts on where and how much to test.
 
@@ -81,37 +113,70 @@ package foo_test
 func TestNew(t *testing.T) {
     s := foo.New()
   
-  //...
+    //...
 }
 ```
 </td></tr>
 </tbody></table>
 
-Use the linter `testpackage` to ensure always testing the api as a system under test.
+Use the `testpackage` linter to ensure always testing the public api of a Go package == as the [System Under Test](#definition-of-unit-under-test).
 
 Whitebox testing has its place, use it where necessary. 
-E.g. when the complexity of the functions warrants it. 
-The main goal is support easy refactoring.
-Consider a naming schema for test files that use whitebox testing by adding a `_wb_test.go` postfix. 
+E.g. when the complexity of a function warrants it. 
+The main goal is support easy refactoring, so don't clue to that test and consider marking it as expendable:
+
+```go
+package foo
+
+// white box test. if it fails, feel free to delete it
+func TestNew(t *testing.T) {
+    // ...
+}
+```
+
+If there are a lot of white box test cases, consider grouping them into their own file, by adding a `_wb_test.go` postfix.
+Such that the black box and white box tests are easier to separate and focus can be applied to the right failing tests
+
+```shell
+$ ls
+new.go
+new_test.go
+new_wb_test.go
+```
 
 
 #### Nest Cases With Subtests
 * Name each subtest
 * Subtests can nest further
-* Subtests can share shared test preparations
-* Combines with [Use Go Testing Toolchain](#use-go-testing-toolchain)
-  * Target individual subtests \
-    `go test -run=TestAdd/add`
-  * The Go tool output lists all the run subtests
+* Subtests can share test preparations
+
+```go
+package foo_test
+
+func TestNew(t *testing.T) {
+    s := foo.New()
+
+    t.Run("a", func(t *testing.T) {
+      //...
+    })
+  
+    t.Run("b", func(t *testing.T) {
+      //...
+    })
+}
+```
+
+* Target and run individual subtests `go test -run=TestNew/a`
+* The Go tool output lists all the run subtests
 
 
 #### Table Driven Tests / Parameterised Tests
-* Good to visually to see easily if all cases are considered 
-* Name each subtest (self describing tests)
+* Good to visually to see easily if all cases are covered
 * Setup table driven tests even for one example,
   as it will be so easy to extend. 
   Setting up table driven tests later on is so hard to do it if it is not there already
-* In case of a regression, add a test case easily.
+* Name each subtest (self describing tests)
+* In case of a regression, add a test case easily
 
 ```go
 func TestAdd(t *testing.T) {
@@ -119,7 +184,7 @@ func TestAdd(t *testing.T) {
         "add": {1, 1, 2},
     }
     
-    for name, tc := range tests {
+    for name, tt := range tests {
         t.Run(name, func(t *testing.T) {
             //...
         })
@@ -129,23 +194,58 @@ func TestAdd(t *testing.T) {
 
 
 #### Use Assert Library
-Don't use the got != expected pattern introduced by Go, use an assertion library, like `github.com/stretchr/testify`.
+Don't use the `got != expected` pattern introduced by Go, use an assertion library.
+```shell
+go get github.com/stretchr/testify
+```
+
+The assert package provides some helpful methods that allow you to write better test code in Go.
+* Prints friendly, easy to read failure descriptions 
+* Allows for very readable code
+* Optionally annotate each assertion with a message
+
+
+```go
+package foo_test
+
+import (
+  "testing"
+  "github.com/stretchr/testify/assert"
+)
+
+func TestNew(t *testing.T) {
+    assert := assert.New(t)
+
+    assert.Equal(123, 123, "they should be equal")
+    assert.NotEqual(123, 456, "they should not be equal")
+	
+    assert.ErrorIs(err, foo.ErrExpected)
+
+    assert.Nil(object)
+    if assert.NotNil(object) {
+        assert.Equal("Something", object.Value)
+    }
+}
+```
 
 
 #### Avoid Mocks
 Prevent the use of mocks, as they make testing complicated and cumbersome
-⇒ Use in memory implementations instead, see [Repository helper](/docs/basics/testing#unit-testing) or [Queue](/docs/basics/jobs#testing)
+⇒ Use real implementations like in memory implementations instead,
+see [Repository helper](/docs/basics/testing#unit-testing) or [Queue](/docs/basics/jobs#testing)
 
-Other steps to take:
+Ideas to consider when testing more complicated things before reaching for a mock:
 * If testing a network service, start a copy of the service locally and open a proper network connection
 * Use integration tests (against [running docker containers](/docs/basics/testing#integration-testing))
-* See Subprocessing of Hashicorp
+* (todo) See Subprocessing of Hashicorp
 
 
 #### Test Fixtures
-* Go test sets the relative path so in the tests you can access local files, e.g. in `testdata/fixtures`
-* Store testdata in `testdata/testdata.go` or `./testdata_test.go` (should last one survive?)
-* todo: templating db fixture files
+* `go test` sets the relative path so in the tests you can access local files, e.g. in `testdata/fixtures`
+* Store testdata in `testdata/testdata.go`
+  * The Go compiler does not include data in any `testdata` folder in the executable
+  * For a small number of testdata, a `testdata_test.go` in the same directory might be enough 
+* (todo) Templating db fixture files
 
 
 #### Golden Files
@@ -164,7 +264,7 @@ Other steps to take:
 
 #### Testhelpers
 * Never return an error => fail the test via the t methods.
-* Use t.Helper (or enforce by arrower linter recommendations)
+* Use t.Helper (or enforce by Arrower linter recommendations)
 * Return closure for cleanup work
 * Fail at once functions: 
   e.g. create an echo server to be proper test helpers,
@@ -190,10 +290,22 @@ Prevent from skipping failing tests, as this lays the ground for more behaviour 
 
 #### Testing is a Mindset
 <img src={require('./methodik_tester.jpg').default} alt="Testing is a mindset"/>
+<br/>
+<br/>
 
 
+### Resources
+[1] https://www.youtube.com/watch?v=8hQG7QlcLBk - Advanced Testing with Go by Hashimoto 2017\
+[2] https://www.reddit.com/r/golang/comments/vfxs3u/beyond_hashimotos_advanced_testing_with_go/ - 2022 updates to [1]\
+[3] https://quii.gitbook.io/learn-go-with-tests/ - Introduction into TDD and ideas on how to test complicated things like io or time
 
 
+<br/>
+<br/>
+<br/>
+<br/> 
+---
+---
 ---
 ### Notes on additional topics
 * high test coverage for application and business logic
@@ -207,8 +319,3 @@ Prevent from skipping failing tests, as this lays the ground for more behaviour 
 
 Zim Notes on testing
 What to test and what not to test? e.g. controller
-
-### Resources
-[1] https://www.youtube.com/watch?v=8hQG7QlcLBk - Advanced Testing with Go by Hashimoto 2017\
-[2] https://www.reddit.com/r/golang/comments/vfxs3u/beyond_hashimotos_advanced_testing_with_go/ - 2022 updates to [1]\
-[3] https://quii.gitbook.io/learn-go-with-tests/ - Introduction into TDD and ideas on how to test complicated things like io or time
