@@ -11,6 +11,30 @@ Recommendations. It's required you think for yourself.
 
 
 
+## Validation
+Asking where to put validation is like asking how many pushups Chuck Norris can do.
+The obvious answer is he can do them all.
+Similarly, validation happens at all the layers.
+
+In the different layers different validations are appropriate.
+For example a typical web application needs different validation on
+all the layers depending on the purpose of the layer.
+
+export const Validation = () => (
+<div>
+    <img src={require('./methodik_validation.png').default}
+         alt="validation per layer"
+         style={{width: '60%'}} />
+</div>
+);
+
+<Validation></Validation>
+<br/>
+<br/>
+
+
+
+
 ## Testing
 What are your drivers that require you to test? 
 And on which granularity do you want to test? 
