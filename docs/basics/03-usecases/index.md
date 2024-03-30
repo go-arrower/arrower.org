@@ -22,6 +22,10 @@ A usecase can be generated with the cli to save some boilerplate:
 $ arrower generate request helloWorld
 ```
 
+or in the same way to generate code for a context:
+```bash
+$ arrower generate request <contextName> helloWorld
+```
 
 It will generate two files in the application layer, one for the Request
 and the other one with a corresponding test.
