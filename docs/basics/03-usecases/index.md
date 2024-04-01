@@ -17,9 +17,16 @@ To build the application layer, Arrower offers a set of primitives:
 | Job       | produces side effects                          | 
 
 
-A usecase can be generated with the cli to save some boilerplate:
+A usecase can be generated with the cli to save some boilerplate. 
+The available commands are:
 ```bash
 $ arrower generate request helloWorld
+$ arrower generate command helloWorld
+$ arrower generate query helloWorld
+$ arrower generate job helloWorld
+
+# arrower detects the primitive when appended to the desired usecase.
+$ arrower generate uc helloWorldRequest
 ```
 
 or in the same way to generate code for a context:
@@ -47,7 +54,7 @@ func NewHelloWorldRequestHandler() app.Request[HelloWorldRequest, HelloWorldResp
 type helloWorldRequestHandler struct{}
 
 type (
-    HelloWorldRequest struct{}
+    HelloWorldRequest  struct{}
     HelloWorldResponse struct{}
 )
 
@@ -81,12 +88,11 @@ func TestHelloWorldRequestHandler_H(t *testing.T) {
         assert.Empty(t, res)
     })
 }
-
 ```
 
 ## Instrumentalisation
 The primitives have the advantage that it is easy to write middleware for them.
-Arrower ships with decorators for 
+Arrower ships with decorators for:
 * Tracing
 * Metrics
 * Logging
@@ -100,7 +106,7 @@ handler := app.NewLoggedRequest(
 )
 ```
 
-To fully instrument an usecase rely on:
+To fully instrument an usecase rely on the convenience helper, which will apply tracing, metrics, and logging all at ones:
 ```go
 handler := app.NewInstrumentedRequest(
     di.TraceProvider, di.MeterProvider, di.Logger,
@@ -117,18 +123,18 @@ to quickly assert on the specific input coming to the usecase or returning data:
 ```go
 // ...
 
-    t.Run("successful request", func(t *testing.T) {
-        t.Parallel()
-        
-        handler := app.NewValidatedRequest(validator.New(), app.TestRequestHandler(func(ctx context.Context, _ structWithValidationTags) (response, error) {
-            assert.True(t, app.PassedValidation(ctx))
-            return response{}, nil
-        }))
-        
-        res, err := handler.H(context.Background(), passingValidationValue)
-        assert.NoError(t, err)
-        assert.Empty(t, res)
-    })
+t.Run("successful request", func(t *testing.T) {
+    t.Parallel()
+    
+    handler := app.NewValidatedRequest(validator.New(), app.TestRequestHandler(func(ctx context.Context, _ structWithValidationTags) (response, error) {
+        assert.True(t, app.PassedValidation(ctx))
+        return response{}, nil
+    }))
+    
+    res, err := handler.H(context.Background(), passingValidationValue)
+    assert.NoError(t, err)
+    assert.Empty(t, res)
+})
 
 // ...
 ```
