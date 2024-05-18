@@ -38,7 +38,7 @@ It will generate two files in the application layer, one for the Request
 and the other one with a corresponding test.
 Both are ready for the actual logic to be implemented.
 
-```go title="shared/application/hello-world.request.go"
+```go title="shared/application/hello-world.usecase.go"
 package application
 
 import (
@@ -66,7 +66,7 @@ func (h *helloWorldRequestHandler) H(ctx context.Context, req HelloWorldRequest)
 }
 ```
 
-```go title="shared/application/hello-world.request_test.go"
+```go title="shared/application/hello-world.usecase_test.go"
 package application_test
 
 import (
