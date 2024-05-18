@@ -55,7 +55,7 @@ Unit tests come in many forms. Arrower provides you with a set of helpers that m
 If you're using the repository pattern it is cumbersome to always implement an in memory copy of the repository.
 Use this helper to get a repository that comes with a lot of often used methods out of the box:
 ```go
-var repo YourRepositoryType = tests.NewMemoryRepository[Entity, EntityID]()
+var repo YourRepositoryType = repository.NewMemoryRepository[Entity, EntityID]()
 ```
 
 
@@ -104,8 +104,8 @@ It is implicitly assumed that the entity has a field named `ID` with an underlyi
 That field will be used as the primary key.
 You can change the field name:
 ```go 
-repo := tests.NewMemoryRepository[E, I](
-	tests.WithIDField("YourPKField"),
+repo := repository.NewMemoryRepository[E, I](
+	repository.WithIDField("YourPKField"),
 )
 ```
 
@@ -113,11 +113,11 @@ repo := tests.NewMemoryRepository[E, I](
 ### Extending the Repository
 If you have methods that are not supported out of the box,
 you can embed the repository and implement your missing methods.
-[See full example](https://github.com/go-arrower/arrower/blob/master/tests/inmemory.example_extend_test.go)
+[See full example](https://github.com/go-arrower/arrower/blob/master/repository/inmemory.example_extend_test.go)
 
 ```go title="memory.example_extend_test.go"
 type UserMemoryRepository struct {
-    *tests.MemoryRepository[User, UserID]
+    *repository.MemoryRepository[User, UserID]
 }
 
 // FindByLogin implements a custom method, that is not supported by the tests.Repository out of the box.
@@ -136,11 +136,11 @@ func (repo *UserMemoryRepository) FindByLogin(ctx context.Context, login string)
 
 ### Overwriting a Method
 You can even fine tune the behaviour of an existing method if your requirements demand it.
-[See full example](https://github.com/go-arrower/arrower/blob/master/tests/inmemory.example_overwrite_test.go)
+[See full example](https://github.com/go-arrower/arrower/blob/master/repository/inmemory.example_overwrite_test.go)
 
 ```go title="memory.example_overwrite_test.go"
 type EntityMemoryRepository struct {
-    *tests.MemoryRepository[Entity, EntityID]
+    *repository.MemoryRepository[Entity, EntityID]
 }
 
 // Count overwrites the existing Count method with your own implementation.
