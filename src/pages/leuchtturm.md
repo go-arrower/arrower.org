@@ -18,6 +18,10 @@ hide_table_of_contents: false
 When it makes sence to use Arrower and when not
 
 ## Architecture
+Clean Architecture
+DDD
+Modular Monolith
+
 ## Documentation
 ## Design Decisions
 ### Abstractions

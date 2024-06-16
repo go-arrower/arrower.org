@@ -1,5 +1,4 @@
 ---
-sidebar_position: 1
 ---
 
 
@@ -9,43 +8,83 @@ sidebar_position: 1
 
 For everything that has to run in the background
 (asynchronous): jobs, tasks, long-running operations, bulk processing,
-cleanups, notifications, ect. 
-It is focused on developer convenience and creating a DDD and Clean Architecture oriented application 
-that is easy to understand, extend, and maintain. There is no need to mix serialisation logic within your domain layer.
+cleanups, notifications, etc.
 
-Works with Postgres to keep the stack of the application small.
+A design goal is to keep the developer focussed on the application and
+in the mindset of the domain. Explicitly freeing you from
+related tasks like serialising the job payload or instrumenting it,
+so that the application is easy to understand, extend, and maintain.
 
-:::caution 
-The use of PostgreSQL will have very serious implications on what is realistically possible with this setup
-in terms of scale but probably totally fine for a small to medium-sized app.
+Jobs run on top of PostgreSQL and use transactional enqueuing. 
+As jobs are enqueued in the same transaction as
+other database operations, this prevents common issues with 
+background tasks in distributed systems and is an easy architecture and
+easy to understand and debug. \
+Workers uses transaction-level locks so db operations performed in the worker
+will commit or rollback with job's transaction.
+
+:::caution
+The use of PostgreSQL as a backend has implications
+on what is possible with this setup in terms of scale 
+but is totally fine for small to medium-sized apps.
 :::
 
 
+<!--- TODO
+autoamated payload wrapping for instrumentation
+autostart of client but shutdown that waits
+retries and error logs
+app cli commands 
+-->
 
 
-## Interface and Characteristics
+## Key Characteristics
+**Transactional queue**\
+Simple development and exactly once guarantee (no need for distributed transactions or 2X protocols). 
+
+**Different Queues**\
+Arrower provides a default queue out of the box, but you can create as many queues as you need.
+Each queue has it's own set of workers and are independent of each other.
+
+**Automatic retries on job or worker failure**\
+Failing jobs are automatically retried with a growing backoff.
+
+**Different priorities per queue**\
+Prioritise your jobs, so important jobs are processed first. 
+A time based and a priority based strategy is available.
+
+**Scheduling of jobs**\
+Run a job at a specific time in the future.
+
+**Visibility into the queues, jobs, and workers**\
+With the admin UI you inspect and manage all your queues, jobs, and the history.
+
+**Automatic instrumentation**\
+Metrics and traces are provided automatically and can be inspected in Grafana.
+
+
+## Queue Interface
 
 ```go
-type Enqueuer interface {
-	Enqueue(context.Context, Job, ...JobOpt) error
+type Queue interface {
+    Enqueue(ctx context.Context, job Job, jobOptions ...JobOption) error
+    Schedule(spec string, job Job) error
+
+    RegisterJobFunc(func (ctx context.Context, job Job) error) error
+    Shutdown(ctx context.Context) error
 }
 
-type Queue interface {
-	Enqueuer
+type Enqueuer interface {
+    Enqueue(ctx context.Context, job Job, jobOptions ...JobOption) error
+}
 
-	RegisterJobFunc(func (ctx context.Context, job Job) error) error
-	Shutdown(context.Context) error
+type Scheduler interface {
+    Schedule(spec string, job Job) error
 }
 ```
 
-Key characteristics
-* Exactly once guarantee for jobs (no need to deal with distributed transactions or 2X protocolls)
-* Scheduling of jobs
-* Automatic retries on job or worker failure
-* Different Queues
-* Different priorities per queue
-* Visibility into the queues and jobs statuses
-* List current workers per queue
+Use the more specific interfaces `Enqueuer` and `Scheduler` as dependencies,
+if you want to limit the use cases ability to manage the queue, e.g. shutdown. 
 
 
 
@@ -57,7 +96,7 @@ var jq jobs.Enqueuer
 // enqueue a single job
 _ = jq.Enqueue(ctx, myJob{Payload: 1})
 
-// enqueue multiple jobs
+// enqueue multiple jobs as a batch operation
 _ = jq.Enqueue(ctx, []myJob{{Payload: 1}, {Payload: 2}})
 
 // enqueue multiple jobs of different kinds
@@ -70,7 +109,7 @@ _ = jq.Enqueue(ctx, []any{myJob{Payload: 1}, otherJob{}})
   Keeping your job consistent with your application data.
 
 
-### Scheduling Jobs
+### Run Job in the Future
 ```go
 _ = jq.Enqueue(ctx, myJob{}, jobs.WithRunAt(time.Now().Add(10*time.Minute)))
 ```
@@ -81,16 +120,46 @@ _ = jq.Enqueue(ctx, myJob{}, jobs.WithRunAt(time.Now().Add(10*time.Minute)))
 _ = jq.Enqueue(ctx, myJob{}, jobs.WithPriority(-1))
 ```
 
-### Inserting Jobs into the Database
-```sql
-INSERT INTO arrower.gue_jobs(job_id, created_at, updated_at, run_at, queue, job_type, priority, args)
-VALUES (generate_ulid(), now(), now(), now(),
-        '', 'MyJob', 0,
-        (json_build_object(
-            'jobData', '{}'
-         ) #>> '{}')::BYTEA -- JSON can not be converted to BYTEA: convert to TEXT first
-        );
+TODO: see subpage to insert into DB directly
+
+
+
+
+## Repeating Tasks
+Repeating tasks build on jobs. They are scheduled,
+and you are responsible to make sure there are enough workers to execute them on time.
+Consider if any peak numbers of jobs are scheduled and
+if it is critical that they are handled immediately if you want to avoid delayed execution.
+
+```go
+_ = jq.Schedule("0 4 * * *", myJob{})
+
+// with optional parameters, the cron job can be more flexible
+_ = jq.Schedule("0 4 * * *", myJob{Payload: "custom-param-for-worker"})
 ```
+
+Use the crontab format as follows:
+```
+Schedule schedules a Job repeatingly. Spec is the crontab format with some additional nonstandard definitions.
+
+┌───────────── minute (0 - 59)
+│ ┌───────────── hour (0 - 23)
+│ │ ┌───────────── day of the month (1 - 31)
+│ │ │ ┌───────────── month (1 - 12)
+│ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday;
+│ │ │ │ │                                   7 is also Sunday on some systems)
+│ │ │ │ │
+│ │ │ │ │
+* * * * *
+
+`@yearly` (or `@annually`)   => `0 0 1 1 *`
+`@monthly`                   => `0 0 1 * *`
+`@weekly`                    => `0 0 * * 0`
+`@daily` (or `@midnight`)    => `0 0 * * *`
+`@hourly`                    => `0 * * * *`
+`@every [interval]` where interval is the duration string that can be parsed by time.ParseDuration.
+```
+An easy way to create a cron schedule is: [crontab.guru](http://crontab.guru/).
 
 
 
