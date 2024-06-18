@@ -168,7 +168,9 @@ An easy way to create a cron schedule is: [crontab.guru](http://crontab.guru/).
 Each job is processed asynchronously in its own worker go routine.
 To be able to process jobs it is important to register a `JobFunc` on the appropriate queue.
 
+:::info
 The function has to have the signature of `func(ctx context.Context, job YourJobType) error`
+:::
 ```go
 var jq jobs.Queue
 
@@ -180,10 +182,25 @@ _ = jq.RegisterJobFunc(func(ctx context.Context, job myJob) error {
 ```
 
 * Returning an error will reschedule the job with an exponential backoff
-* The `ctx` contains a transaction the job is running inside, so you can keep all your operations consistent
-  * `tx, txOk := ctx.Value(postgres.CtxTX).(pgx.Tx)`
 * A call to `RegisterJobFunc` does start the worker pool after a certain time. If the worker poll got started already,
   subsequent calls to `RegisterJobFunc` will shut it down and restart it automatically blocking your call for that time.
+
+### Accessing the Transaction of the Job
+To keep your application consistent perform all db changes on the same transaction as the job.
+* If the job returns without an error the transaction is committed
+* If the job returns an error the transaction is rolled back and the job retried
+
+```go
+var jq jobs.Queue
+
+_ = jq.RegisterJobFunc(func(ctx context.Context, job myJob) error {
+    tx, txOk := ctx.Value(postgres.CtxTX).(pgx.Tx)
+
+    // change db state here...
+	
+    return someErr // rolls back all db changes
+}) 
+``` 
 
 
 
