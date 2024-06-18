@@ -26,7 +26,6 @@ You should not get started with Arrower, just yet.
 |                        | Settings              | Experimenting                           |
 | Context concept        |                       | Experimenting                           |
 | Jobs                   |                       | [Beta](basics/jobs)                     |
-| Repeating Tasks        |                       | [Experimenting](basics/repeating-tasks) |
 | Long running processes |                       | Not started                             |
 | Testing                |                       |                                         |
 |                        | Unit & Integration    | [Beta](basics/testing)                  |

@@ -148,8 +148,8 @@ VALUES (generate_ulid(), now(), now(), now(),
 
 **Scheduling Complex Tasks as Jobs**
 
-If you need to execute more complex business logic, use the cron to insert a row into the jobs table.
-This way the [Jobs](./jobs#inserting-jobs-into-the-database) system is taking over,
+If you need to execute more complex business logic, use a cron to insert a row into the jobs table.
+This way the jobs system is taking over,
 allowing you to perform any kind of operation without the limits of SQL.
 
 ```sql
