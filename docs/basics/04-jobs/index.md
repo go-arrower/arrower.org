@@ -20,7 +20,7 @@ As jobs are enqueued in the same transaction as
 other database operations, this prevents common issues with 
 background tasks in distributed systems and is an easy architecture and
 easy to understand and debug. \
-Workers uses transaction-level locks so db operations performed in the worker
+Workers uses transaction-level locks and db operations performed in the worker
 will commit or rollback with job's transaction.
 
 :::caution
@@ -30,12 +30,6 @@ but is totally fine for small to medium-sized apps.
 :::
 
 
-<!--- TODO
-autoamated payload wrapping for instrumentation
-autostart of client but shutdown that waits
-retries and error logs
-app cli commands 
--->
 
 
 ## Key Characteristics
@@ -56,8 +50,9 @@ A time based and a priority based strategy is available.
 **Scheduling of jobs**\
 Run a job at a specific time in the future.
 
-**Visibility into the queues, jobs, and workers**\
-With the admin UI you inspect and manage all your queues, jobs, and the history.
+**History and insight into the Queues**\
+With the admin UI you inspect and manage all your queues, jobs, and the history,
+this gives you visibility into what is going on at all times.
 
 **Automatic instrumentation**\
 Metrics and traces are provided automatically and can be inspected in Grafana.
@@ -120,8 +115,6 @@ _ = jq.Enqueue(ctx, myJob{}, jobs.WithRunAt(time.Now().Add(10*time.Minute)))
 _ = jq.Enqueue(ctx, myJob{}, jobs.WithPriority(-1))
 ```
 
-TODO: see subpage to insert into DB directly
-
 
 
 
@@ -182,13 +175,15 @@ _ = jq.RegisterJobFunc(func(ctx context.Context, job myJob) error {
 ```
 
 * Returning an error will reschedule the job with an exponential backoff
-* A call to `RegisterJobFunc` does start the worker pool after a certain time. If the worker poll got started already,
-  subsequent calls to `RegisterJobFunc` will shut it down and restart it automatically blocking your call for that time.
+* A call to `RegisterJobFunc` does start the worker pool after a certain time.\
+  If the worker poll got started already, subsequent calls to `RegisterJobFunc`
+  will shut it down and restart it automatically blocking your call for that time.
 
 ### Accessing the Transaction of the Job
 To keep your application consistent perform all db changes on the same transaction as the job.
 * If the job returns without an error the transaction is committed
 * If the job returns an error the transaction is rolled back and the job retried
+  with an increasing backoff.
 
 ```go
 var jq jobs.Queue

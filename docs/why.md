@@ -18,18 +18,18 @@ ones chosen by Arrower. Otherwise, we might not be a fit at all...
 
 Developing websites and web applications for decades, it both became easier and more difficult
 to create and run a web app at the same time. 
-On the one end, tools like WordPress just replaced my previous work completely, while applications are still 
+On the one end, tools like WordPress just replaced my previous work completely, while custom applications are still 
 challenging to build, as the requirements and expectations have increased significantly.
 
-Other communities like Rails, and Django have recognised this.
+Other communities like Rails, and Django have recognised the repeating boilerplate of web applications.
 The Go community always took a stance against frameworks (often justified). 
 However, working on small to mid-sized projects, I regularly get bogged down in technical boilerplate 
-handwriting parts of what is basically a project specific framework in the end, 
-instead of focussing on the users and the functions.
+handwriting parts of what is basically a project specific framework in the end, just in poor. 
+This makes it hard to focus on the users and the functions.
 
 * **Every project needs boilerplate** like linters, makefile, local automation, db migrations
 * **Routine web stuff has to be puzzled together** like www router, view loading, template handling, etc.
-* **Massive time investments into repeating concerns**. Manual configuration setup, being busy with tech instead of features: different loggers over time.
+* **Massive time investments into repeating concerns**. Manual configuration setup, being busy with tech instead of features: different loggers all the time.
 * **A Go framework needs to fit the the language** Working with active record and frameworks like buffalo or beego just are not attractive and when used had quality issues
 * **Developer experience from other languages are not available in Go** Code life reloading: backend and frontend
 * **Time of npm is ending** Don't like JS & npm in the stack
@@ -55,8 +55,8 @@ If they sound familiar to you, though, you might like Arrower.
     The goal is to enable small teams to do a lot.
     Reduce the reliance on npm and JS but only to stay productive
     and not mess with technical concerns where they would not be required and can be done via hypermedia.
-    In no way will prevent this you, and if you need more interactivity you can include your favorite frontend framework like Angular,
-    react, vue, or others.
+    In no way will Arrower prevent this from you, 
+    and if you need more interactivity you can include your favorite frontend framework like Angular, react, vue, or others.
 * **From single file to multiple teams.** 
     Grow your codebase as the needs require it.
     Start simple side projects, prototype rapidly, or engineer a solid SaaS application with your colleagues.

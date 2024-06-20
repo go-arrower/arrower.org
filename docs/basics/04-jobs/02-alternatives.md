@@ -1,7 +1,7 @@
 ---
 ---
 
-# Cron Alternatives
+# Alternatives
 This document describes alternatives to the [Scheduler interface](../jobs#repeating-tasks). 
 Arrower relies on jobs being scheduled by the job queue in the application.
 If you want to run repeating tasks outside of the application this is possible.
