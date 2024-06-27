@@ -1,6 +1,6 @@
 ---
 title: Code Style
-hide_table_of_contents: false
+draft: true
 ---
 
 # Go
