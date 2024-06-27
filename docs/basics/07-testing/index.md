@@ -218,5 +218,5 @@ database as shown above.
 
 ### Docker Images for Integration Testing
 Arrower ships all images you would need to operate and test a setup. 
-See [Alternatives](./jobs/repeating-tasks#postgres-image-with-pg_cron) on how to use the postgres image with a 
+See [Alternatives](./jobs/alternatives#postgres-image-with-pg_cron) on how to use the postgres image with a 
 preinstalled `pg_cron` extension already
