@@ -23,12 +23,6 @@ easy to understand and debug. \
 Workers uses transaction-level locks and db operations performed in the worker
 will commit or rollback with job's transaction.
 
-:::caution
-The use of PostgreSQL as a backend has implications
-on what is possible with this setup in terms of scale 
-but is totally fine for small to medium-sized apps.
-:::
-
 
 
 
@@ -56,6 +50,13 @@ this gives you visibility into what is going on at all times.
 
 **Automatic instrumentation**\
 Metrics and traces are provided automatically and can be inspected in Grafana.
+
+
+:::caution
+The use of PostgreSQL as a backend has implications
+on what is possible with this setup in terms of scale
+but is totally fine for small to medium-sized apps.
+:::
 
 
 ## Queue Interface
