@@ -108,45 +108,10 @@ repo := repository.NewMemoryRepository[E, I](
 )
 ```
 
-
-### Extending the Repository
-If you have methods that are not supported out of the box,
-you can embed the repository and implement your missing methods.
-[See full example](https://github.com/go-arrower/arrower/blob/master/repository/inmemory.example_extend_test.go)
-
-```go title="memory.example_extend_test.go"
-type UserMemoryRepository struct {
-    *repository.MemoryRepository[User, UserID]
-}
-
-// FindByLogin implements a custom method, that is not supported by the tests.Repository out of the box.
-func (repo *UserMemoryRepository) FindByLogin(ctx context.Context, login string) (User, error) {
-    all, _ := repo.All(ctx)
-    
-    for _, u := range all {
-        if u.Login == login {
-            return u, nil
-        }
-    }
-    
-    return User{}, tests.ErrNotFound
-}
-```
-
-### Overwriting a Method
-You can even fine tune the behaviour of an existing method if your requirements demand it.
-[See full example](https://github.com/go-arrower/arrower/blob/master/repository/inmemory.example_overwrite_test.go)
-
-```go title="memory.example_overwrite_test.go"
-type EntityMemoryRepository struct {
-    *repository.MemoryRepository[Entity, EntityID]
-}
-
-// Count overwrites the existing Count method with your own implementation.
-func (repo *EntityMemoryRepository) Count(_ context.Context) (int, error) {
-    return -1, nil
-}
-```
+The repository will probably not match all your needs, see how to
+[extend](https://github.com/go-arrower/arrower/blob/master/repository/inmemory.example_extend_test.go) and
+[overwrite or fine tune](https://github.com/go-arrower/arrower/blob/master/repository/inmemory.example_overwrite_test.go) 
+it, so it fits all your applications needs.
 
 
 
