@@ -33,7 +33,10 @@ func main() {
 
 	a.WebRouter.POST("/add-job", func(c echo.Context) error {
 		// highlight-next-line
-		_ = a.DefaultQueue.Enqueue(c.Request().Context(), MyJob{Payload: c.FormValue("payload")})
+		err := a.DefaultQueue.Enqueue(c.Request().Context(), MyJob{Payload: c.FormValue("payload")})
+		if err != nil {
+			return err
+		}
 
 		return c.NoContent(http.StatusAccepted)
 	})

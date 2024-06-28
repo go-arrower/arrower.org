@@ -30,8 +30,11 @@ func main() {
 	)
 	// highlight-end
 
-	_ = repo.Save(context.Background(), Entity{
+	err := repo.Save(context.Background(), Entity{
 		ID:   EntityID(uuid.New().String()),
 		Name: gofakeit.Name(),
 	})
+	if err != nil {
+		panic(err)
+	}
 }

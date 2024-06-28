@@ -17,7 +17,10 @@ func main() {
 	repo := NewUserMemoryRepository()
 
 	// highlight-next-line
-	_, _ = repo.Count(context.Background())
+	_, err := repo.Count(context.Background())
+	if err != nil {
+		panic(err)
+	}
 }
 
 func NewUserMemoryRepository() *UserMemoryRepository {

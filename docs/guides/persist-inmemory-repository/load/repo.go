@@ -25,6 +25,10 @@ func main() {
 	repo := repository.NewMemoryRepository[Entity, EntityID](repository.WithStore(store))
 	// highlight-end
 
-	entities, _ := repo.All(context.Background())
+	entities, err := repo.All(context.Background())
+	if err != nil {
+		panic(err)
+	}
+
 	fmt.Println(entities)
 }
