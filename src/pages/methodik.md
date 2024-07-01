@@ -255,7 +255,7 @@ func TestNew(t *testing.T) {
 #### Avoid Mocks
 Prevent the use of mocks, as they make testing complicated and cumbersome
 ⇒ Use real implementations like in memory implementations instead,
-see [Repository helper](/docs/basics/testing#unit-testing) or [Queue](/docs/basics/jobs#testing)
+see [Repository helper](/docs/basics/testing#unit-testing-with-repository-pattern) or [Queue](/docs/basics/jobs#testing)
 
 Ideas to consider when testing more complicated things before reaching for a mock:
 * If testing a network service, start a copy of the service locally and open a proper network connection
