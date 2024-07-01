@@ -1,16 +1,15 @@
 ---
-draft: true
 ---
 
 
 
 
 # Database
-Arrower only works with Postgres. See PostgreSQL for everything
+Arrower only works with Postgres. 
 
-Arrower uses the pgx driver. In pricinple you can use another one for your application.
+Arrower uses the pgx driver. In principle, you can use another one for your application.
 
-Arrower does not offer any database abstraction. The Go community does not settle on any standard (yet)
+Arrower does not offer any database abstraction. The Go community does not settle on any standard.
 You can go with whatever you want, e.g.
 * sqlx
 * gorm
