@@ -21,7 +21,7 @@ all the layers depending on the purpose of the layer.
 
 export const Validation = () => (
 <div>
-    <img src={require('./methodik_validation.png').default}
+    <img src={require('./methodik-validation.png').default}
          alt="validation per layer"
          style={{width: '60%'}} />
 </div>
@@ -312,7 +312,7 @@ Prevent from skipping failing tests, as this lays the ground for more behaviour 
 
 
 #### Testing is a Mindset
-<img src={require('./methodik_tester.jpg').default} alt="Testing is a mindset"/>
+<img src={require('./methodik-tester.jpg').default} alt="Testing is a mindset"/>
 <br/>
 <br/>
 
