@@ -8,7 +8,7 @@ const darkTheme = themes.dracula;
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Arrower",
-  tagline: "Arrows to hit your development needs",
+  tagline: "Arrows for your application's needs",
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here

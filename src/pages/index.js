@@ -32,7 +32,7 @@ export default function Home() {
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="A complete framework to develop Go web applications."
+      description="A complete framework to develop web applications in Go."
     >
       <HomepageHeader />
       <main>
