@@ -25,7 +25,7 @@ userID := auth.CurrentUserID(ctx)
 isLoggedIn := auth.IsLoggedIn(ctx)
 
 // Check if a user has superuser privileges.
-isSuperUser := auth.IsSuperUser(ctx)
+isSuperuser := auth.IsSuperuser(ctx)
 
 ```
 
