@@ -5,45 +5,19 @@
 
 
 # Testing
-### Testing Pyramid
-It's important to understand that this is just one view.
-You might find parts of it useful but also have your own experience, fondness, and approach to testing. 
-That is fine!
-Arrower wants to support, so you can do as you like.
+## Testing Backed into it From the Get Go
+<ul>
+    <li>Manual</li>
+    <li>💤 UI</li>
+    <li>💤 E2E</li>
+    <li>⏳ Integration</li>
+    <li>✅ Unit</li>
+</ul>
 
-The style, completeness, and amount of test cases might also depend on
-which phase your project is in at any given point, 
-while prototyping you will want to employ a different testing strategy than when you're maintaining an application.
-
-
-
-
-export const Pyramid = () => (
-<div>
-    <img src={require('./pyramid.png').default}
-         alt="schema of testing pyramid"
-         style={{
-            width: '60%',
-            float: 'right',
-    }} />
-    <span>
-        Arrower is using the following terminology,
-        and the picture at the right is only a sketch of the dynamics of the testing pyramid. 
-        <br/>
-        <br/>
-        <ul>
-            <li>Manual</li>
-            <li>💤 UI</li>
-            <li>💤 E2E</li>
-            <li>⏳ Integration</li>
-            <li>✅ Unit</li>
-        </ul>
-    </span>
-    <div style={{clear:'both'}}></div>
-</div>
-);
-
-<Pyramid></Pyramid>
+**Convention**\
+All packages provide helpers to make testing easy
+* Constructors start with `New`
+* Constructors for tests start with `Test`
 
 
 

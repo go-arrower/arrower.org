@@ -18,7 +18,7 @@ It provides its own implementation of `slog.Handler`, to add interesting extra f
 ```go
 logger := alog.New()
 logger  = alog.NewDevelopment()
-logger  = alog.NewTest(nil)
+logger  = alog.Test(nil)
 ```
 
 | Environment | Constructor      | Key Features                                                                                               |
@@ -107,6 +107,11 @@ type Logger interface {
 	InfoCtx(ctx context.Context, msg string, args ...any)
 }
 ```
+
+
+
+
+## Testing
 
 
 

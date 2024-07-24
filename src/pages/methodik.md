@@ -7,6 +7,11 @@ toc_max_heading_level: 6
 # Methodik
 Recommendations. It's required you think for yourself.
 
+It's important to understand that this is just one view.
+You might find parts of it useful but also have your own experience, fondness, and approach.
+That is fine!
+Arrower wants to support, so you can do as you like.
+
 
 
 
