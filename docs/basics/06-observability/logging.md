@@ -17,15 +17,15 @@ It provides its own implementation of `slog.Handler`, to add interesting extra f
 
 ```go
 logger := alog.New()
-logger  = alog.NewDevelopment()
-logger  = alog.Test(nil)
+logger  = alog.NewDevelopment(pgx)
+logger  = alog.Test(t)
 ```
 
-| Environment | Constructor      | Key Features                                                                                               |
-|-------------|------------------|------------------------------------------------------------------------------------------------------------|
-| production  | `New`            | <ul><li>Defaults to level `INFO`</li><li>Formats in JSON</li><li>Writes to Stderr</li></ul>                |
-| development | `NewDevelopment` | <ul><li>Defaults to level `DEBUG`</li><li>Writes text to Stderr</li><li>Sends logs to local loki</li></ul> |
-| testing     | `NewTest`        | <ul><li>Writes text to a given `io.Writer`</li><li>If `nil`, all logs are discarded</li></ul>              |
+| Environment | Constructor      | Key Features                                                                                                          |
+|-------------|------------------|-----------------------------------------------------------------------------------------------------------------------|
+| production  | `New`            | <ul><li>Defaults to level `INFO`</li><li>Formats in JSON</li><li>Writes to Stderr</li></ul>                           |
+| development | `NewDevelopment` | <ul><li>Defaults to level `DEBUG`</li><li>Writes text to Stderr</li><li>Sends logs to local loki & postgres</li></ul> |
+| testing     | `Test`           | <ul><li>Custom assertions for the log output</li></ul>                                                                |
 
 
 
@@ -53,6 +53,7 @@ for all handlers instead.
 | slog.NewTextHandler | The standard libraries handler                                                                                                                                           |
 | slog.NewJSONHandler | The standard libraries handler                                                                                                                                           |
 | NewLokiHandler      | Sends all logs to a loki instance. Use this for local development only!<br/> For production log to Stderr and use docker, kubernetes, or other drivers to ship the logs. |
+| NewPostgresHandler  | Sends all logs to postgres. Use this for local development only!<br/>                                                                                                    |
 
 
 
@@ -74,11 +75,6 @@ alog.Unwrap(logger).SetLevel(slog.LevelDebug)
 
 ## Writing Log Messages
 
-### `slog` Logger Interface 
-
-Arrower returns always an `slog.Logger` for logging. So you can use the known API and all the available methods
-that Go is offering.
-
 The Go community has struggled for some time to find good interfaces, that applies to loggers as well.
 Check out Dave Cheney's post [Let's talk about logging](https://dave.cheney.net/2015/11/05/lets-talk-about-logging)
 where he makes a compelling argument to only log two things:
@@ -90,6 +86,12 @@ One important consideration though: It is recommended to give the context to the
 so use `Log()`, `LogAttrs()`, or `InfoCtx()` over `Info()`.
 The context is carrying information to [correlate the logs with traces](#correlate-with-tracing).
 
+
+### `slog` Logger Interface 
+
+Arrower returns always an `slog.Logger` for logging. So you can use the known API and all the available methods
+that Go is offering.
+
 ### `alog` Logger Interface
 Arrower recommends you the use the `slog.Logger` interface.
 You probably don't want to bind your code to our logger interface.
@@ -97,7 +99,6 @@ You probably don't want to bind your code to our logger interface.
 That said, the project itself uses a more restricted subset of the `slog` interface, that:
 1. encourages the use of methods taking context.Context, so that tracing information can be correlated
 2. encourages the use of the levels `DEBUG` and `INFO`, without preventing the others
-   (as Arrower has its own levels in case you want to see what its doing)
 
 ```go
 type Logger interface {
@@ -106,6 +107,21 @@ type Logger interface {
 	DebugCtx(ctx context.Context, msg string, args ...any)
 	InfoCtx(ctx context.Context, msg string, args ...any)
 }
+```
+
+### Log Level
+Arrower works with the standard slog levels. 
+That also means you can define your own log levels.
+Arrower uses the following two log levels internally, leaving you some space
+to define your own in between, if desired.
+
+```go
+const (
+	// LevelInfo is used to see what is going on inside Arrower.
+	LevelInfo = slog.Level(-8)
+	// LevelDebug is used by Arrower developers, if you really want to know what is going on.
+	LevelDebug = slog.Level(-12)
+)
 ```
 
 
