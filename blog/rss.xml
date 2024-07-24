@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>Arrower Blog</title>
+        <link>https://arrower.org/blog</link>
+        <description>Arrower Blog</description>
+        <lastBuildDate>Thu, 27 Jun 2024 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <language>en</language>
+        <item>
+            <title><![CDATA[Go's Roadmap is Neglecting Web Development]]></title>
+            <link>https://arrower.org/blog/go-roadmap-neglecting-web-development</link>
+            <guid>https://arrower.org/blog/go-roadmap-neglecting-web-development</guid>
+            <pubDate>Thu, 27 Jun 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[Go is fine-tuned for the development of CLI, cloud, and network services. The focus on stability, security, performance, and developer tool support makes it a great language. Because it is so great, I want to build websites in Go as well.]]></description>
+            <content:encoded><![CDATA[<p>Go is fine-tuned for the development of CLI, cloud, and network services.
+The focus on stability, security, performance, and developer tool
+support makes it a great language.
+Because it is so great, I want to build websites in Go as well.</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="go-is-not-optimised-for-web-development">Go is Not Optimised for Web Development<a class="hash-link" aria-label="Direct link to Go is Not Optimised for Web Development" title="Direct link to Go is Not Optimised for Web Development" href="https://arrower.org/blog/go-roadmap-neglecting-web-development#go-is-not-optimised-for-web-development">​</a></h2>
+<p>When Go was released, it was a refreshing head start on a new web project.
+Testing is built into the language, it supports JSON marshalling out of the box,
+it felt more like PHP than Java and I had many more amazing moments learning Go.
+Over the years, users' expectations of web apps have increased.
+And in many ways, Go is not built or optimized for web development.</p>
+<p>This is a problem for solo developers and small teams.
+They need to build and ship things, but still want the speed, type safety,
+and tooling of the language.
+After all, Go feels a lot like other scripting languages used for
+web development, but without the hassle.
+So, why should it be hard to develop websites with it?</p>
+<p>At the GopherCon in Berlin, Google outlined its view on Go:
+The company plotted languages and popular use cases against their
+adoption curves.</p>
+<img src="https://arrower.org/assets/images/2024-06-27-go-roadmap-neglecting-web-development-market-26bc624b3d006873434c5b8e4663203d.jpg" title="The business of Go by Cameron Balahan" style="display:block;margin:auto">
+<p><br>
+<!-- -->Going forward, Google aims to compete in the cloud and GenAI markets.
+Its goal? To increase Go's market share.<br>
+<!-- -->In conversations, the Go team made it clear to me
+that they don't want to focus on web development.
+A segment of the market long lost to Django.</p>
+<p>Winning market share is a mindset that thinks in terms of competition
+with means: winners and losers. <br>
+<a href="https://killedbygoogle.com/" title="Google Graveyard">Want to venture a guess</a>
+what happens to a project when Google has lost the market
+or shifts their headquarters' ORKs?</p>
+<img src="https://arrower.org/assets/images/2024-06-27-go-roadmap-neglecting-web-development-top-gun-bfe8ecce39c90d03618c083514cd3475.gif" title="Competition leads to second places and losers" style="display:block;margin:auto">
+<p><br>
+<!-- -->Now, <em>competition</em> happens on the next hot trend.<br>
+<!-- -->Bye bye web development 👋
+<span style="color:#999">and bye bye AI market 👋</span></p>
+<p>Google and other large companies focus on cloud services.
+They don't care enough about web development to make
+a real impact on the language or ecosystem.
+So, the question is, is there a subset of the community that cares?</p>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="arrower-for-web-development-in-go">Arrower for Web Development in Go<a class="hash-link" aria-label="Direct link to Arrower for Web Development in Go" title="Direct link to Arrower for Web Development in Go" href="https://arrower.org/blog/go-roadmap-neglecting-web-development#arrower-for-web-development-in-go">​</a></h2>
+<p>Large companies create microservices.
+This work demands teams and budgets larger
+than those of typical small projects.
+Not caring about resources and addressing problems of scale is not aiding
+solo developers and small teams building web applications.
+Arrower is an effort to address this:</p>
+<p>First, by a building mindset!
+This is more constructive compared to a competitive head-to-head
+of gaining market share.
+Building allows a long term perspective on web development,
+and it brings lasting motivation and innovation.</p>
+<p>Second, Arrower challenges some of the long-held conventions
+of the Go community to simplify web development by being:</p>
+<ul>
+<li>a framework that brings common building blocks together in a
+cohesive manner but avoids known framework traps.</li>
+<li>quick and productive for (MVP) development in Go,
+matching up to Django and Rails.</li>
+<li>focused on domain supporting abstractions and rethinking long-held biases,
+e.g. against reflection.</li>
+</ul>
+<p><br>
+<!-- -->Arrower brings modern web development trends and developer productivity to Go.
+This includes innovations like hot reload long adopted by other languages,
+while it avoids known traps.
+There's a reason after all why Go developers don't like frameworks 😉</p>
+<p><a href="https://github.com/go-arrower/arrower" title="Arrower on GitHub">Check out Arrower</a>
+and join the effort to make web development in Go more feasible and fun.</p>]]></content:encoded>
+            <category>Arrower</category>
+            <category>Go</category>
+            <category>Web Development</category>
+        </item>
+    </channel>
+</rss>
