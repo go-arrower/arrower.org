@@ -38,46 +38,9 @@ Use the Arrower provided repository only for simple CRUD
 and throwaway prototypes.\
 Don't limit yourself to the methods offered out of the box and 
 implement your own custom method and behaviour as you need!\
-There is nothing more powerful than a well crafted SQL command 
+There is nothing more powerful than a well crafted SQL query 
 behind your domain focussed repository method.
 :::
-
-```go title="Direct use of generic repository"
-// define the repository in the domain 
-type UserRepository interface {
-    Save(ctx context.Context, user User) error
-    FindByID(ctx context.Context, id UserID) (User, error)
-    Delete(ctx context.Context, user User) error
-}
-
-// usage in your application
-var repo UserRepository = repository.NewMemoryRepository[User, UserID](),
-```
-
-```go title="Wrap the generic repository"
-// define the repository in the domain 
-type UserRepository interface {
-    Save(ctx context.Context, user User) error
-    FindByID(ctx context.Context, id UserID) (User, error)
-    Delete(ctx context.Context, user User) error
-}
-
-// implement the repository in the interfaces layer
-func NewInMemoryUserRepository() *InMemoryUserRepository {
-    return &InMemoryUserRepository{
-        MemoryRepository: repository.NewMemoryRepository[User, UserID](),
-    }
-}
-
-var _ UserRepository = (*InMemoryUserRepository)(nil)
-
-type InMemoryUserRepository struct {
-    *repository.MemoryRepository[User, UserID]
-}
-
-// usage in your application
-var repo UserRepository = NewInMemoryUserRepository()
-```
 
 
 
@@ -85,7 +48,7 @@ var repo UserRepository = NewInMemoryUserRepository()
 As simple repositories share a repeating set of methods,
 Arrower offers commonly used methods ready out of the box.
 In general, it is good practise to keep your own repository methods to a minimum.
-Arrower offers a lot for your convenience,
+Arrower offers a lot for your convenience, so you have a buffet to choose from,
 **not** as a recommendation to use all of them at all times!
 
 
@@ -186,6 +149,45 @@ type TenantRepository[T any, tID id, E any, eID id] interface {
 ```
   </TabItem>
 </Tabs>
+
+
+
+```go title="Direct use of generic repository"
+// define the repository in the domain 
+type UserRepository interface {
+    Save(ctx context.Context, user User) error
+    FindByID(ctx context.Context, id UserID) (User, error)
+    Delete(ctx context.Context, user User) error
+}
+
+// usage in your application
+var repo UserRepository = repository.NewMemoryRepository[User, UserID](),
+```
+
+```go title="Wrap the generic repository"
+// define the repository in the domain 
+type UserRepository interface {
+    Save(ctx context.Context, user User) error
+    FindByID(ctx context.Context, id UserID) (User, error)
+    Delete(ctx context.Context, user User) error
+}
+
+// implement the repository in the interfaces layer
+func NewInMemoryUserRepository() *InMemoryUserRepository {
+    return &InMemoryUserRepository{
+        MemoryRepository: repository.NewMemoryRepository[User, UserID](),
+    }
+}
+
+var _ UserRepository = (*InMemoryUserRepository)(nil)
+
+type InMemoryUserRepository struct {
+    *repository.MemoryRepository[User, UserID]
+}
+
+// usage in your application
+var repo UserRepository = NewInMemoryUserRepository()
+```
 
 
 

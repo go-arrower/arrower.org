@@ -99,6 +99,7 @@ Arrower ships with decorators for:
 * Metrics
 * Logging
 * Validation
+* Transactions
 
 They can be called with:
 ```go
