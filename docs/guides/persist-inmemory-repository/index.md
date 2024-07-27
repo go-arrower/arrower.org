@@ -9,8 +9,8 @@ import File1 from '!!raw-loader!./load/repo.go';
 
 # Persist an InMemory Repository
 :::warning
-This is only recommended while prototyping and to run local demos
-Not for production use.
+This is only recommended while prototyping 
+and to run local demos **not** for production use.
 :::
 
 
