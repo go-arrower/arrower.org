@@ -82,8 +82,9 @@ const config = {
           },
           // { to: "/leuchtturm", label: "Leuchtturm", position: "left" },
           { to: "/methodik", label: "Methodik", position: "left" },
-          // { to: "/code-style", label: "Code Style", position: "left" },
           { to: "/blog", label: "Blog", position: "right" },
+          // { to: "/code-style", label: "Code Style", position: "left" },
+          { to: "/reference", label: "Reference", position: "right" },
           {
             href: "https://github.com/go-arrower/arrower",
             label: "GitHub",
