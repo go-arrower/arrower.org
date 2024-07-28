@@ -200,7 +200,7 @@ repo := repository.NewMemoryRepository[testdata.Entity, testdata.EntityID]()
 c, _ := repo.Count(ctx)
 assert.Equal(t, 0, c, "repo should be empty")
 ```
-[go.mod](..%2F..%2F..%2F..%2Farrower%2Fgo.mod)
+
 2. Build in assertions in the default repository
 ```go
 repo := repository.Test[testdata.Entity, testdata.EntityID](t)
