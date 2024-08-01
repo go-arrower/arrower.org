@@ -151,7 +151,9 @@ Use the `testpackage` linter to ensure always testing the public api of a Go pac
 
 Whitebox testing has its place, use it where necessary. 
 E.g. when the complexity of a function warrants it. 
-The main goal is support easy refactoring, so don't clue to that test and consider marking it as expendable:
+The main goal is support easy refactoring, 
+so don't clue to that test and consider marking it as expendable.
+**If it fails, feel free to delete it.**
 
 ```go
 package foo
@@ -167,9 +169,9 @@ Such that the black box and white box tests are easier to separate and focus can
 
 ```shell
 $ ls
-new.go
-new_test.go
-new_wb_test.go
+foo.go
+foo_test.go
+foo_wb_test.go
 ```
 
 
