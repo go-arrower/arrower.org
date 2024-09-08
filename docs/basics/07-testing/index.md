@@ -5,19 +5,45 @@
 
 
 # Testing
-## Testing Backed into it From the Get Go
+## Testing Backed in From the Get-Go
 <ul>
-    <li>Manual</li>
-    <li>💤 UI</li>
+    <li>✅ Unit - all packages come with unit testing abilities</li>
+    <li>⏳ Integration - helpers to make your integration tests easier</li>
     <li>💤 E2E</li>
-    <li>⏳ Integration</li>
-    <li>✅ Unit</li>
+    <li>💤 UI</li>
+    <li>Manual - always left to you</li>
 </ul>
 
-**Convention**\
+## Convention
 All packages provide helpers to make testing easy
-* Constructors start with `New`
-* Constructors for tests start with `Test`
+* Constructors for regular logic start with `New`
+* Constructors for tests start with `Test`. 
+  Returning objects that assist your code in being tested well.
+
+
+### Semantic Assertions
+Many packages come with specialised test helpers and assertions.
+These can be used in combination with the assertions from 
+[stretchr/testify](https://github.com/stretchr/testify) 
+and the Go standard library.
+
+| [Repository](/docs/basics/database/repository#testing) | [Queue](/docs/basics/jobs#testing) | [Logger](/docs/basics/observability/logging#testing) | Renderer | Database |
+|--------------------------------------------------------|------------------------------------|------------------------------------------------------|----------|----------|
+| Empty ✅                                                | Empty ✅                            | Empty ✅                                              |          |          |
+| NotEmpty ✅                                             | NotEmpty ✅                         | NotEmpty ✅                                           |          |          |
+| Total                                                  | Total ✅                            | Total                                                |          |          |
+| Contains                                               | Contains                           | Contains ✅                                           |          |          |
+| NotContains                                            | NotContains                        | NotContains ✅                                        |          |          |
+| HasEntity (?)                                          | HasJob (?)                         | HasLine (?)                                          |          |          |
+| HasNotEntity (?)                                       | HasNotJob (?)                      | NasNotLine (?)                                       |          |          |
+|                                                        |                                    |                                                      |          |          |
+|                                                        | Jobs ✅                             | Lines ✅                                              |          |          |
+|                                                        | Clear ✅                            | String ✅                                             |          |          |
+|                                                        | GetFirst ✅                         |                                                      |          |          |
+|                                                        | Get ✅                              |                                                      |          |          |
+|                                                        | GetFirstOf✅                        |                                                      |          |          |
+|                                                        | GetOf ✅                            |                                                      |          |          |
+|                                                        | Reset (?)                          |                                                      |          |          |
 
 
 
