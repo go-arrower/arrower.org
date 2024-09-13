@@ -37,13 +37,13 @@ and the Go standard library.
 |                                                        |                                    |                                                      |          |          |
 | HasEntity (?)                                          | HasJob (?)                         | HasLine (?)                                          |          |          |
 | HasNotEntity (?)                                       | HasNotJob (?)                      | NasNotLine (?)                                       |          |          |
-|                                                        | Jobs ✅                             | Lines ✅                                              |          |          |
-|                                                        | Clear ✅                            | String ✅                                             |          |          |
-|                                                        | GetFirst ✅                         |                                                      |          |          |
-|                                                        | Get ✅                              |                                                      |          |          |
-|                                                        | GetFirstOf✅                        |                                                      |          |          |
+|                                                        | Jobs ✅                             | Lines ✅                                              |          |          | 
+|                                                        | GetFirst ✅                         | String ✅                                             |          |          |
+|                                                        | Get ✅                              |                                                      |          |          |          |
+|                                                        | GetFirstOf✅                        |                                                      |          | 
 |                                                        | GetOf ✅                            |                                                      |          |          |
 |                                                        | Reset (?)                          |                                                      |          |          |
+|                                                        |                                    |                                                      |          |          |
 
 
 
