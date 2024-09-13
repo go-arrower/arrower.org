@@ -32,11 +32,11 @@ and the Go standard library.
 | Empty ✅                                                | Empty ✅                            | Empty ✅                                              |          |          |
 | NotEmpty ✅                                             | NotEmpty ✅                         | NotEmpty ✅                                           |          |          |
 | Total                                                  | Total ✅                            | Total                                                |          |          |
-| Contains                                               | Contains                           | Contains ✅                                           |          |          |
-| NotContains                                            | NotContains                        | NotContains ✅                                        |          |          |
+| Contains                                               | Contains ✅                         | Contains ✅                                           |          |          |
+| NotContains                                            | NotContains ✅                      | NotContains ✅                                        |          |          |
+|                                                        |                                    |                                                      |          |          |
 | HasEntity (?)                                          | HasJob (?)                         | HasLine (?)                                          |          |          |
 | HasNotEntity (?)                                       | HasNotJob (?)                      | NasNotLine (?)                                       |          |          |
-|                                                        |                                    |                                                      |          |          |
 |                                                        | Jobs ✅                             | Lines ✅                                              |          |          |
 |                                                        | Clear ✅                            | String ✅                                             |          |          |
 |                                                        | GetFirst ✅                         |                                                      |          |          |
