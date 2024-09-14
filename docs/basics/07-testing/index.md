@@ -31,7 +31,7 @@ and the Go standard library.
 |--------------------------------------------------------|------------------------------------|------------------------------------------------------|----------|----------|
 | Empty ✅                                                | Empty ✅                            | Empty ✅                                              |          |          |
 | NotEmpty ✅                                             | NotEmpty ✅                         | NotEmpty ✅                                           |          |          |
-| Total ✅                                                | Total ✅                            | Total                                                |          |          |
+| Total ✅                                                | Total ✅                            | Total ✅                                              |          |          |
 | Contains                                               | Contains ✅                         | Contains ✅                                           |          |          |
 | NotContains                                            | NotContains ✅                      | NotContains ✅                                        |          |          |
 |                                                        |                                    |                                                      |          |          |
