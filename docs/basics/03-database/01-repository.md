@@ -22,6 +22,10 @@ in whatever technology you like!
 
 
 ## Convenience Helpers
+If you're using the repository pattern it is cumbersome 
+to always implement an in memory copy of the repository (for testing) and 
+the real one.
+
 The approach arrower is taking:
 * as repository has to be implemented each time there is a helper:
     * the following interfaces are provided as in memory and pg implementation
@@ -65,7 +69,7 @@ type Repository[E any, ID id] interface {
     Read(ctx context.Context, id ID) (E, error)
     Update(ctx context.Context, entity E) error
     Delete(ctx context.Context, entity E) error
-    
+
     All(ctx context.Context) ([]E, error)
     AllByIDs(ctx context.Context, ids []ID) ([]E, error)
     FindAll(ctx context.Context) ([]E, error)
@@ -79,22 +83,24 @@ type Repository[E any, ID id] interface {
     ContainsID(ctx context.Context, id ID) (bool, error)
     ContainsIDs(ctx context.Context, ids []ID) (bool, error)
     ContainsAll(ctx context.Context, ids []ID) (bool, error)
-    
+
+    CreateAll(ctx context.Context, entities []E) error
     Save(ctx context.Context, entity E) error
     SaveAll(ctx context.Context, entities []E) error
     UpdateAll(ctx context.Context, entities []E) error
     Add(ctx context.Context, entity E) error
     AddAll(ctx context.Context, entities []E) error
-    
+
     Count(ctx context.Context) (int, error)
     Length(ctx context.Context) (int, error)
-    Empty(ctx context.Context) (bool, error)
-    IsEmpty(ctx context.Context) (bool, error)
-    
+
     DeleteByID(ctx context.Context, id ID) error
     DeleteByIDs(ctx context.Context, ids []ID) error
     DeleteAll(ctx context.Context) error
     Clear(ctx context.Context) error
+
+    AllIter(ctx context.Context) Iterator[E, ID]
+    FindAllIter(ctx context.Context) Iterator[E, ID]
 }
 ```
   </TabItem>
@@ -150,6 +156,26 @@ type TenantRepository[T any, tID id, E any, eID id] interface {
   </TabItem>
 </Tabs>
 
+
+
+
+```go
+var repo YourRepositoryType = repository.NewMemoryRepository[Entity, EntityID]()
+```
+
+It is implicitly assumed that the entity has a field named `ID` with an underlying type of `string` or `int`.
+That field will be used as the primary key.
+You can change the field name:
+```go 
+repo := repository.NewMemoryRepository[E, I](
+	repository.WithIDField("YourPKField"),
+)
+```
+
+The repository will probably not match all your needs, see how to
+[extend](https://github.com/go-arrower/arrower/blob/master/repository/inmemory.example_extend_test.go) and
+[overwrite or fine tune](https://github.com/go-arrower/arrower/blob/master/repository/inmemory.example_overwrite_test.go)
+it, so it fits all your applications needs.
 
 
 ```go title="Direct use of generic repository"
