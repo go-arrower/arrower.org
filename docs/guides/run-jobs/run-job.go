@@ -41,5 +41,5 @@ func main() {
 		return c.NoContent(http.StatusAccepted)
 	})
 
-	a.WebRouter.Logger.Fatal(a.WebRouter.Start(fmt.Sprintf(":%d", a.Config.Web.Port)))
+	a.WebRouter.Logger.Fatal(a.WebRouter.Start(fmt.Sprintf(":%d", a.Config.HTTP.Port)))
 }

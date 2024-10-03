@@ -34,5 +34,5 @@ func main() {
 		panic(err)
 	}
 
-	a.WebRouter.Logger.Fatal(a.WebRouter.Start(fmt.Sprintf(":%d", a.Config.Web.Port)))
+	a.WebRouter.Logger.Fatal(a.WebRouter.Start(fmt.Sprintf(":%d", a.Config.HTTP.Port)))
 }
