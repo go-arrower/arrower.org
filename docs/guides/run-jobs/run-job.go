@@ -16,7 +16,7 @@ type MyJob struct {
 }
 
 func main() {
-	a, _, err := arrower.New()
+	a, err := arrower.New()
 	if err != nil {
 		panic(err)
 	}
