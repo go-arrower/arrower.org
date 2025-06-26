@@ -6,8 +6,11 @@ description: Log to see what is going on in your application.
 
 # Logging
 
-Arrower recommends using `slog.Logger` in your application.\
-It comes with its own implementation of `slog.Handler`, to add interesting extra functionalities.
+Arrower recommends using [`slog.Logger`](https://pkg.go.dev/log/slog#Logger)
+in your application.\
+It comes with its own implementation of 
+[`slog.Handler`](https://pkg.go.dev/log/slog#Handler), 
+to add interesting extra functionalities.
 
 
 
@@ -23,7 +26,7 @@ logger := alog.Test(t)
 |-------------|------------------|--------------------------------------------------------------------------------------------------------------------------------|
 | production  | `New`            | <ul><li>Defaults to level `INFO`</li><li>Writes to Stderr</li><li>Formats in JSON</li></ul>                                    |
 | development | `NewDevelopment` | <ul><li>Defaults to level `DEBUG`</li><li>Writes to Stderr</li><li>Sends logs to local loki & postgres, if available</li></ul> |
-| testing     | `Test`           | <ul><li>Writes to buffer</li><li>Semantic assertions for the log output</li></ul>                                              |
+| testing     | `Test`           | <ul><li>Defaults to level `DEBUG`</li><li>Writes to buffer</li><li>Semantic assertions for the log output</li></ul>            |
 
 
 ### Available Handlers
@@ -50,6 +53,7 @@ for all handlers instead.
 |-------------------------|------------------------------------------------------------------------------|
 | slog.NewTextHandler     | The standard libraries handler                                               |
 | slog.NewJSONHandler     | The standard libraries handler                                               |
+| slog.DiscardHandler     | The standard libraries handler                                               |
 | alog.NewLokiHandler     | Use this for local development only!<br/> Sends all logs to a loki instance  |
 | alog.NewPostgresHandler | Use this for local development only!<br/> Sends all logs to postgres         |
 
@@ -81,7 +85,7 @@ settings can be used to dynamically change behaviour at runtime.\
 Using the e.g. the postgres settings store,
 changes in settings are reflected immediately for subsequent requests.
 
-If used/enabled, it impacts the performance of the logger.
+If used/enabled, it impacts the performance of the logger!
 
 ```go
 // SettingLogLevel // sets the log level across loggers
