@@ -1,0 +1,26 @@
+name: Run Go Guides
+
+on:
+  push:
+
+jobs:
+  run-guides:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_DB: "arrower"
+          POSTGRES_USER: "arrower"
+          POSTGRES_PASSWORD: "secret"
+        ports:
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 1.24
+
+      - name: Run Go guides
+        run: |
+          go run ./scripts/run-guides.go ./docs/guides

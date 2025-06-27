@@ -16,7 +16,7 @@ and to run local demos **not** for production use.
 
 ## Persist Repository
 
-<CodeBlock language="go" title="main.go">{File0}</CodeBlock>
+<CodeBlock language="go" title="save.go">{File0}</CodeBlock>
 
 
 **Check filesystem**
@@ -37,7 +37,7 @@ cat /tmp/Entity.json
 
 ## Restore Repository Data
 
-<CodeBlock language="go" title="main.go">{File1}</CodeBlock>
+<CodeBlock language="go" title="load.go">{File1}</CodeBlock>
 
 
 **Output**
