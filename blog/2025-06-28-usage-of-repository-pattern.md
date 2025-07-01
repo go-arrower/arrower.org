@@ -8,6 +8,7 @@ description: ""
 #image: ""
 slug: "usage-of-repository-pattern"
 #last_update: "2024-07-24"
+toc_max_heading_level: 4
 draft: true
 ---
 
@@ -37,7 +38,7 @@ of the shear number of methods.\
 It is not intended that you use all those methods! 
 **Choose only the methods you really need.**\
 The purpose is to give you a quick start 
-and depending on the use case different methods make more sense than others.
+and depending on the usecase different methods make more sense than others.
 
 **It is expected that you implement custom domain methods!**
 At no time feel restricted by the choice of methods provided by Arrower.\
@@ -158,3 +159,219 @@ does contain all the methods, and they can be used during testing time.
 This is a design decision and tradeoff to make. 
 
 :::
+
+
+## Alternatives to Query Your Repository
+As there are different ways to design the repository, 
+there are also different ways to query the data.
+
+### Why Querying at All?
+So far, every data access not covered by one of the provided methods
+of the Arrower repository has to have a custom method.
+The ability to query the repository 
+is an alternative to those custom methods.
+
+First, the advantages of creating custom domain methods are,
+that they are a very strong and absolutely clear contract of the repository. 
+At no time is there any question of what the domain can do.\
+Also, it shows you the real cost of developing and maintaining
+a lot of special purpose usecases, 
+especially ones you start accumulating a lot of them.
+
+Second, the disadvantages are that it is very cumbersome to
+setup and maintain, especially when having to support an implementation
+for testing and one for production.
+Also, looking only at the interface of the domain methods gives you
+an understanding of which constraints the data 
+and its implementation might have.
+Which the queries do not, 
+as you don't know which combinations are used and actually called.
+This prevents from seeing or knowing how the database is used, and
+e.g. which indexes to create.
+
+BUT the ability to query from the domain is so convenient, and
+it prevents the overhead of implementing all the custom methods
+so that it is worth considering this design tradeoff.
+
+If you want to keep your data access purely in the domain,
+just don't use them.
+
+:::note[The ability to query is not intended to be as powerful as SQL.]
+
+You will not find anything like Preload/Join/With, or even pagination.
+If you need more than implement your custom method,
+which gives you full control for all your needs and design choices
+, e.g. in the case of pagination choose a style suited to your application
+like page-based, cursor-based or any of the others.
+
+:::
+
+### Access Patterns
+
+#### Query
+A direct query for all entities of the repository that satisfy 
+the given criteria.
+
+```go
+repo.AllBy(ctx, q.Where("Name").Is("test"))
+```
+
+The queries provide a consistent and context-aware naming with no ambiguity,
+e.g. Dates get `WasToday()`, strings get `Contains()`.
+The API supports IDE autocomplete and is somewhat type safe.\
+The tradeoff is clearly to make it feel and flow naturally, 
+while being an of the shelf component. 
+Compile-time checks and absolute type-safety can only be achieved,
+by manually defining them or using code generation.
+Both are not suitable for a generic repository implementation.
+See the alternatives below, if you feel uncomfortable with this.
+
+More complex queries are possible as well.
+
+```go
+repo.FindByQ(ctx, q.
+    Where("Name").Is("test").
+    Or(
+        q.Where("Age").Is(1337),
+        q.Where("Age").Is(1338),
+    )
+)
+```
+
+:::danger[It is possible to generate invalid queries]
+
+For example, if the column name is invalid, 
+or you sort logical sub-condition.
+
+Here the tradeoff of the queries really shows:
+They are optimised for simple convenient access to the data store:
+as a time saver.\
+This does not relieve you of neither taking care nor not testing. 
+
+:::
+
+#### Model Filter
+
+Filters are type save and even more convenient.
+They take in a struct and return all entities that satisfy the given values.
+
+Filters only work with exact value matches, 
+and all fields have to be satisfied at the same time.
+Fields with zero values are ignored.
+
+In this example the struct of the existing domain model `User`
+is reused for filtering,
+and only the relevant fields are set. 
+All other fields are left out.
+
+```go
+repo.AllBy(ctx, q.F(domain.User{
+    Active: true,
+    Group:  "admin",
+    // other fields are zero
+}))
+```
+
+#### Domain Specific Filter
+Reusing an existing domain model as a filter is not always a good idea,
+as a lot of information on how the data is accessed is hidden.
+
+It's possible to define your own filter structs that represent specific 
+intent of the domain with a subset of the fields of the domain model.
+
+```go
+repo.AllBy(ctx, q.F(q.AdminUsers{{Active: true, Group: "admin"}}))
+
+type (
+    ActiveUsers struct{
+        Active bool
+    }
+    AdminUsers struct{
+        Active bool
+        Group string
+    }
+}
+```
+
+#### Predefined Domain Queries
+To prevent generic queries all over the application, 
+it is possible to define domain oriented queries in a central place
+and only use them.
+
+This increases type-safety for the caller, 
+as he relies only on the defined queries instead of
+manually constructing queries int he application layer.
+
+```go
+repo.AllBy(ctx, q.ActiveUsers())
+
+func ActiveUsers() Query {
+    return Query{Conditions: ConditionGroup{Conditions: []Cond{
+        {
+            Field:    "Active",
+            Operator: "=",
+            Value:    true,
+        },
+    }}}
+}
+```
+
+Both examples show only access to one such predefined query, 
+but it is easy to imagine such a function for each 
+domain specific data access.
+
+```go
+repo.AllBy(ctx, q.User{}.Active())
+
+type User struct{}
+
+func (u User) Active() Query {
+    return Query{Conditions: ConditionGroup{Conditions: []Cond{
+        {
+            Field:    "Active",
+            Operator: "=",
+            Value:    true,
+        },
+    }}}
+}
+```
+
+#### Flexible Domain Queries
+
+Lastly, it is also possible to offer truly domain oriented 
+yet flexible queries.
+
+```go
+repo.AllBy(ctx, q.Users().
+    Active().
+    Adults().
+    WithVerifiedEmail().
+    Find())
+
+type UserQuery struct {
+    Query
+}
+
+func Users() *UserQuery {
+    return &UserQuery{}
+}
+
+func (q *UserQuery) Active() *UserQuery {
+    return q
+}
+
+func (q *UserQuery) Adults() *UserQuery {
+    return q
+}
+
+func (q *UserQuery) WithVerifiedEmail() *UserQuery {
+    return q
+}
+
+func (q *UserQuery) Find() Query {
+    return q.Query{}
+}
+```
+
+
+## Known Limitations
