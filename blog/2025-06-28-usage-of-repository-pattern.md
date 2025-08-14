@@ -240,11 +240,11 @@ repo.FindByQ(ctx, q.
 
 :::danger[It is possible to generate invalid queries]
 
-For example, if the column name is invalid, 
-or you sort logical sub-condition.
+For example: if the column name is invalid,
+or the data type is not matching.
 
-Here the tradeoff of the queries really shows:
-They are optimised for simple convenient access to the data store:
+Here Arrower's tradeoff really shows:
+They are optimised for simple convenient access to a generic data store:
 as a time saver.\
 This does not relieve you of neither taking care nor not testing. 
 
