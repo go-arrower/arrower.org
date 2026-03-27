@@ -349,29 +349,38 @@ repo.AllBy(ctx, q.Users().
     Find())
 
 type UserQuery struct {
-    Query
+    *q.Query
 }
 
 func Users() *UserQuery {
-    return &UserQuery{}
+    return &UserQuery{&q.Query{}}
 }
 
 func (q *UserQuery) Active() *UserQuery {
+    *q.Query = q.Where("status").Is("active")
     return q
 }
 
 func (q *UserQuery) Adults() *UserQuery {
+    *q.Query = q.Where("age").Is("18") // use GTE
     return q
 }
 
 func (q *UserQuery) WithVerifiedEmail() *UserQuery {
+    *q.Query = q.Where("email_verified").Is(true)
     return q
 }
 
-func (q *UserQuery) Find() Query {
-    return q.Query{}
+func (q *UserQuery) Find() q.Query {
+    return *q.Query
 }
+
 ```
 
 
 ## Known Limitations
+* possibility of invalid queries, e.g. column name changes and it not updated => assert at test time
+* not full SQL ability. ON PURPOSE!
+* complicated e.g. join operations => custom method
+* does not do pg schema migrations
+* only memory & pg right now. no sqlite or mysql
