@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkarrower_org=globalThis.webpackChunkarrower_org||[]).push([[8121],{8070(e){e.exports=JSON.parse('{"tags":[{"label":"Arrower","permalink":"/blog/tags/arrower","count":1},{"label":"Go","permalink":"/blog/tags/go","count":1},{"label":"Web Development","permalink":"/blog/tags/web-development","count":1}]}')}}]);

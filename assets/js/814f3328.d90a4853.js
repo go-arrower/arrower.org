@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkarrower_org=globalThis.webpackChunkarrower_org||[]).push([[7472],{5513(e){e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Go\'s Roadmap is Neglecting Web Development","permalink":"/blog/go-roadmap-neglecting-web-development","unlisted":false,"date":"2024-06-27T00:00:00.000Z"}]}')}}]);
