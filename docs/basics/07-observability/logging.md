@@ -163,6 +163,36 @@ const (
 )
 ```
 
+### Log Attributes
+To have a consistent way of naming logging attributes,
+the package `logging` defines a set of attributes available.
+This prevents key variants like `traceID`, `trace_id`, `TraceID` 
+appearing in the logs at the same time.
+
+```go
+logger.InfoContext(ctx, "Starting server failed",
+    logging.Error(err),
+    logging.Port(conf.Port),
+)
+
+// Result:
+// level=INFO msg="Starting server failed" error=not-leet-time port=1337
+```
+
+* Add new functions to the `logging` package
+* For consistency and to prevent ambiguity never use `slog` on the fly
+* For convenience when debugging the `logging.Attr(key, value)` is available
+
+```go
+package logging
+
+import "log/slog"
+
+func Error(err error) slog.Attr {
+    return slog.String("error", err.Error())
+}
+```
+
 
 
 
@@ -177,8 +207,8 @@ All attributes added to the context are logged automatically
 by the Arrower logger, provided you use a 
 [context aware method](#alog-logger-interface).
 ```go
-ctx = alog.AddAttr(ctx, slog.String("my", "attr"))
-ctx = alog.AddAttrs(ctx, slog.String("my", "attr"), slog.String("other", "attr"))
+ctx = alog.AddAttr(ctx, logging.Attr("my", "attr"))
+ctx = alog.AddAttrs(ctx, logging.Attr("my", "attr"), logging.Attr("other", "attr"))
 ```
 
 
