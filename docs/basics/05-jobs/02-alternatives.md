@@ -13,7 +13,7 @@ Running a cron directly in the database can be a huge advantage,
 as it allows to execute SQL statements directly without any overhead.
 This is ideal for maintenance work or data aggregation pipelines.
 The drawback is that your infrastructure might not support those extensions, 
-in which case you can just use Arrower's `Scheduler`.
+in which case use Arrower's `Scheduler`.
 
 
 
@@ -94,11 +94,6 @@ The image installs the extension into the default database `postgres` and makes 
 as if it was installed there.
 
 The image is regenerated every week, so that you might have the latest version of postgres and its base image available to you.
-
-:::note
-Link ADL on why this is.
-Testing and limitations of pg_cron
-:::
 
 If you want to use the cron from a different user or database, you might have to fine-tune your setup:
 1. Ensure your user can access the cron schema:

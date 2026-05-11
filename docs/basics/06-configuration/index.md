@@ -48,7 +48,7 @@ func Load(cfgFile string) (*Config, error) {
 
 
 This is an example of a Arrower configuration file.
-Just add your own configuration according to your needs.
+Add your own configuration according to your needs.
 
 Familiarise yourself with viper's precedence order. 
 In the following example of a configuration file for the test environment,

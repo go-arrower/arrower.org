@@ -13,13 +13,13 @@ cleanups, notifications, etc.
 A design goal is to keep the developer focussed on the application and
 in the mindset of the domain. Explicitly freeing you from
 related tasks like serialising the job payload or instrumenting it,
-so that the application is easy to understand, extend, and maintain.
+so that the application is understandable, extensible, and maintainable.
 
 Jobs run on top of PostgreSQL and use transactional enqueuing. 
 As jobs are enqueued in the same transaction as
 other database operations, this prevents common issues with 
 background tasks in distributed systems and is an easy architecture and
-easy to understand and debug. \
+simple to understand and debug. \
 Workers uses transaction-level locks and db operations performed in the worker
 will commit or rollback with job's transaction.
 
@@ -61,7 +61,7 @@ but is totally fine for small to medium-sized apps.
 
 ## Queue Interface
 
-```go
+```go title="Queue interface"
 type Queue interface {
     Enqueue(ctx context.Context, job Job, jobOptions ...JobOption) error
     Schedule(spec string, job Job) error
@@ -86,7 +86,7 @@ if you want to limit the use cases ability to manage the queue, e.g. shutdown.
 
 
 ## Enqueue Jobs
-```go
+```go title="Enqueue jobs"
 var jq jobs.Enqueuer
 
 // enqueue a single job
@@ -165,7 +165,7 @@ To be able to process jobs it is important to register a `JobFunc` on the approp
 :::info
 The function has to have the signature of `func(ctx context.Context, job YourJobType) error`
 :::
-```go
+```go title="Register a job handler"
 var jq jobs.Queue
 
 _ = jq.RegisterJobFunc(func(ctx context.Context, job myJob) error {
@@ -186,7 +186,7 @@ To keep your application consistent perform all db changes on the same transacti
 * If the job returns an error the transaction is rolled back and the job retried
   with an increasing backoff.
 
-```go
+```go title="Access the job transaction"
 var jq jobs.Queue
 
 _ = jq.RegisterJobFunc(func(ctx context.Context, job myJob) error {
@@ -205,7 +205,7 @@ _ = jq.RegisterJobFunc(func(ctx context.Context, job myJob) error {
 Arrower supports multiple job queues, but each queue has to be instantiated. If no explicit queue name is
 set, the default queue is used.
 
-```go
+```go title="Create a named queue"
 jq, err := jobs.NewPostgresJobs(alog.NewNoopLogger(), noop.NewMeterProvider(), noop.NewTracerProvider(), pgHandler.PGx,
     jobs.WithQueue("queueName"), // set the name of the queue you want to run
 )
@@ -228,14 +228,14 @@ You'll have logs, metrics, and traces available for you.
 
 
 ## Testing
-As the Job's handlers are just functions you can test them normally, like you would do anyway.
+Job handlers are functions: test them as you would any other function.
 
 What is remaining is to ensure the right Jobs get enqueued on the emitting site.
 For this an in memory implementation of the `jobs.Queue` interface is available, you can use in tests. It comes
 with some additional methods, to make testing easier:
 
 1. Custom assertions for the job queue
-```go
+```go title="Test job assertions"
   jq := jobs.NewTestingJobs()
   jassert := jq.Assert(t)
 
@@ -255,7 +255,7 @@ with some additional methods, to make testing easier:
 ```
 
 2. Custom test helpers beyond the `jobs.Queue` interface
-```go
+```go title="Test helpers beyond the interface"
   jq := jobs.NewTestingJobs()
 
   // get a Job without processing it, to assert Job details.

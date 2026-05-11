@@ -114,10 +114,10 @@ The application runs on [http://localhost:8080](http://localhost:8080).
 Hot reload server runs on port `3030`.
 
 Hooks in `.config/` are loaded on startup and participate in the lifecycle:
-- `OnConfigLoaded` — modify config before the app starts
-- `OnStart` — run before the first build
-- `OnChanged` — run on every file change
-- `OnShutdown` — run on graceful shutdown
+- `OnConfigLoaded`: modify config before the app starts
+- `OnStart`: run before the first build
+- `OnChanged`: run on every file change
+- `OnShutdown`: run on graceful shutdown
 
 See [Hooks](/docs/advanced/hooks) for details.
 
@@ -137,16 +137,16 @@ arrower generate <type> <contextName> <name>
 
 | Type      | Alias | Description |
 |-----------|-------|-------------|
-| `request` | `req` | Generate a Request use case (input + output) |
-| `command` | `cmd` | Generate a Command use case (input only) |
-| `query`   | | Generate a Query use case (input + output, no side effects) |
+| `request` | `req` | Generate a Request Use Case (input + output) |
+| `command` | `cmd` | Generate a Command Use Case (input only) |
+| `query`   | | Generate a Query Use Case (input + output, no side effects) |
 | `job`     | | Generate a Job handler |
 | `usecase` | `uc` | Auto-detect type from the name suffix |
 
 **Examples:**
 
 ```bash
-# Generate a specific use case type
+# Generate a specific Use Case type
 arrower generate request helloWorld
 arrower generate command createOrder
 arrower generate query listUsers
@@ -163,8 +163,8 @@ arrower generate request <contextName> helloWorld
 ```
 
 Each command creates two files in the `application/` directory:
-- `<name>.usecase.go` — handler with request/response types
-- `<name>.usecase_test.go` — test with success case
+- `<name>.usecase.go`: handler with request/response types
+- `<name>.usecase_test.go`: test with success case
 
 See [Use Cases - Code Generation](/docs/basics/usecases#code-generation) for the generated output.
 

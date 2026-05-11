@@ -41,7 +41,7 @@ Arrower is under active development. This page tracks the maturity of each featu
 | Context       | Phase          |
 |---------------|----------------|
 | Auth          | [Alpha](/docs/context/auth)                |
-| Admin         | [Alpha](/docs/context/admin)               |
+| Admin         | Alpha                |
 
 ## CLI
 

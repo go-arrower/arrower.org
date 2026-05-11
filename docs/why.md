@@ -61,7 +61,8 @@ If they sound familiar to you, though, you might like Arrower.
     Grow your codebase as the needs require it.
     Start simple side projects, prototype rapidly, or engineer a solid SaaS application with your colleagues.
     Focus on your domain.
-    Each context represents a DDD bounded context with its own routes, views, and database schema — keeping boundaries clean from day one, so splitting into services later is straightforward if the need arises.
+    Each context represents a DDD bounded context with its own routes, views, and database schema. 
+    Keeping boundaries clean from day one, so splitting into services later is straightforward if the need arises.
 * **Simple where possible.**
     Software is all about tradeoffs,
     Arrower chooses operation simplicity (monolith)

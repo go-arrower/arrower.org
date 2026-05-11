@@ -17,10 +17,10 @@ of the command.
 As an example let's look at the devops situation: 
 Arrower is shipping with docker-compose as the default mechanism.
 But what if your project does not rely on docker-compose but on Minikube instead?
-Not a problem with hooks, you can just change this to your specific setup.
+Not a problem with hooks: change this to your specific setup.
 
 Similarly, you can do many other things with hooks as well, like changing
-the configuration values of the run command or customizing the frontend 
+the configuration values of the run command or customising the frontend 
 stack to your specific needs.
 
 
@@ -40,14 +40,14 @@ registered and used extend the behaviour of the cli.
 The following conventions are important to understand, 
 to be able to develop your own hooks.
 
-* Hooks can customize the behaviour of `arrower run` in a flexible but still limited manner
+* Hooks can customise the behaviour of `arrower run` in a flexible but still limited manner
 * Each hook is a file saved in the `.config` folder of the project.
 * All files matching the `*.hook.go` pattern are recognised as a hook
 * The loading of the hooks only happens once at the startup of the cli command
 * Hooks are sorted by filename, so you can control the execution order
 * All methods block
 * Only imports from the standard library are possible
-  * You might view this as a limitation, but the hooks are intended to be small scripts or even just calling out the OS via `os.Exec` and do not perform any elaborate calculations
+  * You might view this as a limitation, but the hooks are intended to be small scripts or calling the OS via `os.Exec` and do not perform any elaborate calculations
 * The package of the hooks should be `main`
 * There is no configuration file for the arrower cli command, use the hooks to overwrite settings
 

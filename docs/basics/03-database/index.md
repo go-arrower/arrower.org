@@ -24,5 +24,5 @@ You can go with whatever you want, e.g.:
 Whatever you choose, Arrower recommends the Repository pattern
 for all database access, so that 
 the domain model is not coupled to the database model.
-It also makes it easy to test the application.
+It also simplifies testing.
 

@@ -7,7 +7,7 @@ sidebar_position: 2
 All things related to authentication.
 
 ## Getting Started
-Arrower Auth provides a email + password authentication.
+Arrower Auth provides an email + password authentication.
 
 :::note
 In the future more options and pluggable backends are possible.
@@ -16,8 +16,7 @@ In the future more options and pluggable backends are possible.
 
 ## Accessing The User From A Web Request
 
-```go
-
+```go title="Access current user"
 // Retrieve the currently authenticated user's ID.
 userID := auth.CurrentUserID(ctx)
 
@@ -35,8 +34,7 @@ Arrower has a set of middlewares that regulate access to a given route.
 
 All routes of the Admin Context are already protected. 
 
-```go
-
+```go title="Protect routes"
 // Protect an individual route.
 router.GET("/your/protected/url", nil, auth.EnsureUserIsLoggedInMiddleware)
 
@@ -55,7 +53,7 @@ tbd
 
 
 ## Events
-The Auth Context is emiting the following events
+The Auth Context is emitting the following events
 
 :::note
 TODO

@@ -18,7 +18,7 @@ To build the application layer, Arrower offers a set of primitives:
 | Job       | produces side effects                          | 
 
 
-A use case can be generated with the CLI to save boilerplate.
+A Use Case can be generated with the CLI to save boilerplate.
 It creates two files in the application layer: the handler and a corresponding test,
 both ready for the actual logic to be implemented.
 
@@ -96,7 +96,7 @@ $ arrower generate request <contextName> helloWorld
 ```
 
 ## Instrumentation
-The primitives have the advantage that it is easy to write middleware for them.
+The primitives make it straightforward to write middleware.
 Arrower ships with decorators for:
 * Tracing
 * Metrics
@@ -112,7 +112,7 @@ handler := app.NewLoggedRequest(
 )
 ```
 
-To fully instrument an usecase rely on the convenience helper, which will apply tracing, metrics, and logging all at once:
+To fully instrument a Use Case, rely on the convenience helper, which applies tracing, metrics, and logging at once:
 ```go
 handler := app.NewInstrumentedRequest(
     di.TraceProvider, di.MeterProvider, di.Logger,
@@ -121,11 +121,11 @@ handler := app.NewInstrumentedRequest(
 ```
 
 ## Testing
-To make it easy to test any code having an usecase as a dependency (e.g. controller), 
+For testing code with a Use Case dependency (e.g. controller), 
 a bunch of helpers are ready for use.
 
 Take a look at this test and how the `app.TestRequestHandler` is used
-to quickly assert on the specific input coming to the usecase or returning data:
+to quickly assert on the specific input coming to the Use Case or returning data:
 ```go
 // ...
 

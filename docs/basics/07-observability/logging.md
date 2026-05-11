@@ -16,7 +16,7 @@ to add interesting extra functionalities.
 
 ## Introduction
 
-```go
+```go title="Logger constructors"
 logger := alog.New()
 logger := alog.NewDevelopment(pgx)
 logger := alog.Test(t)
@@ -36,7 +36,7 @@ You can bring and use your own handler(s).
 Any slog Handlers will work.
 This gives you more control over your logging needs, compared to one of the default loggers from above. 
 
-```go
+```go title="Custom handlers"
 logger := alog.New(
     alog.WithHandler(h0),
     alog.WithHandler(h1),
@@ -219,7 +219,7 @@ ctx = alog.AddAttrs(ctx, logging.Attr("my", "attr"), logging.Attr("other", "attr
 To ensure what got logged during testing time is easy.
 alog comes with a set of semantic assertions and fails your test cases.
 
-```go
+```go title="Test log output"
 func TestMyService(t *testing.T) {
     logger := alog.Test(t)
 
@@ -237,7 +237,7 @@ func TestMyService(t *testing.T) {
 ## Correlate With Tracing
 
 Your web applications might span multiple machines.
-To make it easy to trace down a "request", 
+To trace a "request", 
 arrower adds the `traceID` and `spanID`
 automatically to each output, if present in the context.
 

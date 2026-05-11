@@ -49,7 +49,7 @@ and the Go standard library.
 
 
 ## Integration Testing
-Sometimes you just don't want to test against an in memory implementation and need to see if your application behaves 
+Sometimes you don't want to test against an in-memory implementation and need to see if your application behaves 
 correctly against the real database.
 
 This pattern spins up a postgres database inside a docker container and removes the container after the test has 
@@ -63,7 +63,7 @@ The testdata is seeded with the project [testfixtures](https://github.com/go-tes
 and if an file `testdata/fixtures/_common.yaml` exists it is automatically loaded. For additional data per test case
 take a look at [multiple tables in one file](https://github.com/go-testfixtures/testfixtures#-single-file-on-multiple-tables)
 
-```go
+```go title="integration_test.go"
 //go:build integration
 
 package yourpackage_test

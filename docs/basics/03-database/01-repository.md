@@ -23,7 +23,7 @@ in whatever technology you like!
 
 ## Convenience Helpers
 If you're using the repository pattern it is cumbersome 
-to always implement an in memory copy of the repository (for testing) and 
+to always implement an in-memory copy of the repository (for testing) and 
 the real one.
 
 The approach arrower is taking:
