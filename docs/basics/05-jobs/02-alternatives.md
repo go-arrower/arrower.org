@@ -2,7 +2,7 @@
 ---
 
 # Cron Alternatives
-This document describes alternatives to the [Scheduler interface](../jobs#repeating-tasks). 
+This document describes alternatives to the [Scheduler interface](/docs/basics/jobs#repeating-tasks). 
 Arrower relies on jobs being scheduled by the job queue in the application.
 If you want to run repeating tasks outside of the application this is possible.
 
@@ -90,7 +90,7 @@ Alternatively, use the docker image `ghcr.io/go-arrower/postgres`
 docker pull ghcr.io/go-arrower/postgres:latest
 ```
 
-The image installs the extension into the default database `postges` and makes it available to your database,
+The image installs the extension into the default database `postgres` and makes it available to your database,
 as if it was installed there.
 
 The image is regenerated every week, so that you might have the latest version of postgres and its base image available to you.

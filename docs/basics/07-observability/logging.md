@@ -241,15 +241,7 @@ To make it easy to trace down a "request",
 arrower adds the `traceID` and `spanID`
 automatically to each output, if present in the context.
 
-:::note Improve Docs
-Screenshot how logs have IDs
-:::
-
 In return each log is also recorded as an event in the span, to make it easier to debug
 potentially issues.
 
-:::note Improve Docs
-Screenshot how traces have logs with all attributes
-:::
-
-For more on tracing, see [traces](traces).
+For more on tracing, see [traces](/docs/basics/observability/traces).

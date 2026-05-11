@@ -18,24 +18,9 @@ for logging the new `slog` from the Go standard library.
 
 
 
-:::note Improve Docs
-Screenshot how logs & trances & metrics are linked in Grafana
-:::
-
 To quickstart your development the `docker-compose.yaml` file contains everything you need locally
 and can give inspiration on how to setup your own infrastructure.
 
 <br />
 
 <DocCardList />
-
-<br />
-
-:::note Improve Docs
-Show dashboard with some interesting charts & queries
-- Number of http requests
-- Number of application functions called
-- Number of Jobs
-- Average response times
-- Number of failures
-:::

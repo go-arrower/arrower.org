@@ -55,7 +55,7 @@ From Arrower's perspective, the goal of testing is to **feel confident about dep
 With that here are some arrows, and you go and use them.
 
 
-### Methods and Practices
+### Methods and Practises
 
 
 #### Use Go Testing Toolchain

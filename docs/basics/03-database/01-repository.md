@@ -160,21 +160,21 @@ type TenantRepository[T any, tID id, E any, eID id] interface {
 
 
 ```go
-var repo YourRepositoryType = repository.NewMemoryRepository[Entity, EntityID]()
+var repo YourRepositoryType = arepo.NewMemoryRepository[Entity, EntityID]()
 ```
 
 It is implicitly assumed that the entity has a field named `ID` with an underlying type of `string` or `int`.
 That field will be used as the primary key.
 You can change the field name:
 ```go 
-repo := repository.NewMemoryRepository[E, I](
-	repository.WithIDField("YourPKField"),
+repo := arepo.NewMemoryRepository[E, I](
+	arepo.WithIDField("YourPKField"),
 )
 ```
 
 The repository will probably not match all your needs, see how to
-[extend](https://github.com/go-arrower/arrower/blob/master/repository/inmemory.example_extend_test.go) and
-[overwrite or fine tune](https://github.com/go-arrower/arrower/blob/master/repository/inmemory.example_overwrite_test.go)
+[extend](https://github.com/go-arrower/arrower/blob/master/arepo/inmemory.example_extend_test.go) and
+[overwrite or fine tune](https://github.com/go-arrower/arrower/blob/master/arepo/inmemory.example_overwrite_test.go)
 it, so it fits all your applications needs.
 
 
@@ -187,7 +187,7 @@ type UserRepository interface {
 }
 
 // usage in your application
-var repo UserRepository = repository.NewMemoryRepository[User, UserID](),
+var repo UserRepository = arepo.NewMemoryRepository[User, UserID](),
 ```
 
 ```go title="Wrap the generic repository"
@@ -201,14 +201,14 @@ type UserRepository interface {
 // implement the repository in the interfaces layer
 func NewInMemoryUserRepository() *InMemoryUserRepository {
     return &InMemoryUserRepository{
-        MemoryRepository: repository.NewMemoryRepository[User, UserID](),
+        MemoryRepository: arepo.NewMemoryRepository[User, UserID](),
     }
 }
 
 var _ UserRepository = (*InMemoryUserRepository)(nil)
 
 type InMemoryUserRepository struct {
-    *repository.MemoryRepository[User, UserID]
+    *arepo.MemoryRepository[User, UserID]
 }
 
 // usage in your application
@@ -222,39 +222,39 @@ var repo UserRepository = NewInMemoryUserRepository()
 
 1. Classical way
 ```go
-repo := repository.NewMemoryRepository[testdata.Entity, testdata.EntityID]()
+repo := arepo.NewMemoryRepository[testdata.Entity, testdata.EntityID]()
 c, _ := repo.Count(ctx)
 assert.Equal(t, 0, c, "repo should be empty")
 ```
 
 2. Build in assertions in the default repository
 ```go
-repo := repository.Test[testdata.Entity, testdata.EntityID](t)
+repo := arepo.Test[testdata.Entity, testdata.EntityID](t)
 repo.Empty()
 ```
 
 3. Assertion helper for any / custom repositories
 ```go
 repo := NewMyCustomRepository[Entity, EntityID]()
-rassert := repository.TestAssert[Entity, EntityID](t, repo)
+rassert := arepo.TestAssert[Entity, EntityID](t, repo)
 rassert.Empty()
 ```
 
 4. Embed assertions into custom repository
 ```go
 repo := NewMyCustomTestRepository(t)
-repo.Emtpy()
+repo.Empty()
 
 func NewMyCustomTestRepository(t *testing.T) *MyCustomRepository {
-    repo := repository.NewMemoryRepository[Entity, EntityID]()
+    repo := arepo.NewMemoryRepository[Entity, EntityID]()
     return &MyCustomRepository{
         MemoryRepository: repo,
-        TestAssertions:   repository.TestAssert(t, repo),
+        TestAssertions:   arepo.TestAssert(t, repo),
     }
 }
 
 type MyCustomRepository struct {
-    *repository.MemoryRepository[Entity, EntityID]
-    *repository.TestAssertions[Entity, EntityID]
+    *arepo.MemoryRepository[Entity, EntityID]
+    *arepo.TestAssertions[Entity, EntityID]
 }
 ```

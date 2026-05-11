@@ -4,7 +4,9 @@
 
 
 
-# Usecases
+# Use Cases
+
+## Primitives
 
 To build the application layer, Arrower offers a set of primitives:
 
@@ -16,26 +18,9 @@ To build the application layer, Arrower offers a set of primitives:
 | Job       | produces side effects                          | 
 
 
-A usecase can be generated with the cli to save some boilerplate. 
-The available commands are:
-```bash
-$ arrower generate request helloWorld
-$ arrower generate command helloWorld
-$ arrower generate query helloWorld
-$ arrower generate job helloWorld
-
-# arrower detects the primitive when appended to the desired usecase.
-$ arrower generate uc helloWorldRequest
-```
-
-or in the same way to generate code for a context:
-```bash
-$ arrower generate request <contextName> helloWorld
-```
-
-It will generate two files in the application layer, one for the Request
-and the other one with a corresponding test.
-Both are ready for the actual logic to be implemented.
+A use case can be generated with the CLI to save boilerplate.
+It creates two files in the application layer: the handler and a corresponding test,
+both ready for the actual logic to be implemented.
 
 ```go title="shared/application/hello-world.usecase.go"
 package application
@@ -92,7 +77,25 @@ func TestHelloWorldRequestHandler_H(t *testing.T) {
 }
 ```
 
-## Instrumentalisation
+## Code Generation
+
+```bash
+$ arrower generate request helloWorld
+$ arrower generate command helloWorld
+$ arrower generate query helloWorld
+$ arrower generate job helloWorld
+
+# arrower detects the primitive when appended to the desired use case.
+$ arrower generate uc helloWorldRequest
+```
+
+Or generate for a specific context:
+
+```bash
+$ arrower generate request <contextName> helloWorld
+```
+
+## Instrumentation
 The primitives have the advantage that it is easy to write middleware for them.
 Arrower ships with decorators for:
 * Tracing
@@ -109,7 +112,7 @@ handler := app.NewLoggedRequest(
 )
 ```
 
-To fully instrument an usecase rely on the convenience helper, which will apply tracing, metrics, and logging all at ones:
+To fully instrument an usecase rely on the convenience helper, which will apply tracing, metrics, and logging all at once:
 ```go
 handler := app.NewInstrumentedRequest(
     di.TraceProvider, di.MeterProvider, di.Logger,

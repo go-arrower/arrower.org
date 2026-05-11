@@ -6,6 +6,8 @@
 
 # Configuration
 
+## Application Configuration
+
 Arrower uses [viper]( https://github.com/spf13/viper) for configuration.
 So you can be flexible in how you set up your app to build and ship what you want.
 
@@ -67,3 +69,38 @@ postgres:
 // highlight-next-line
 your-key: your-value
 ```
+
+
+## Secrets
+
+Arrower provides a `secret.Secret` type to prevent sensitive values 
+from being accidentally exposed in logs, JSON output, or string representations.
+
+```go
+s := secret.New("my-cookie-secret")
+
+s.String()          // "******"
+s.Secret()          // "my-cookie-secret" - access the actual value
+```
+
+Use it in your config struct for fields that
+should never appear in logs or API responses:
+
+```go
+type MyConfig struct {
+    arrower.Config `mapstructure:",squash"`
+    APIKey         secret.Secret `mapstructure:"api_key"`
+}
+```
+
+The `Secret` type implements:
+- `fmt.Stringer` - always returns `******`
+- `json.Marshaler` / `json.Unmarshaler` - masks on marshal, unmarshals the real value
+- `encoding.TextMarshaler` / `encoding.TextUnmarshaler` - masks on marshal
+- `sql.Scanner` / `driver.Valuer` - persists the real value to the database
+- `slog` integration - logged values show `******`
+
+:::note
+The value is obfuscated, not encrypted. It can still be accessed via `unsafe.Pointer`.
+For stronger guarantees, encrypt the data before storing it.
+:::

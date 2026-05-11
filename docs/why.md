@@ -30,10 +30,10 @@ This makes it hard to focus on the users and the functions.
 * **Every project needs boilerplate** like linters, makefile, local automation, db migrations
 * **Routine web stuff has to be puzzled together** like www router, view loading, template handling, etc.
 * **Massive time investments into repeating concerns**. Manual configuration setup, being busy with tech instead of features: different loggers all the time.
-* **A Go framework needs to fit the the language** Working with active record and frameworks like buffalo or beego just are not attractive and when used had quality issues
+* **A Go framework needs to fit the language** Working with active record and frameworks like buffalo or beego just are not attractive and when used had quality issues
 * **Developer experience from other languages are not available in Go** Code life reloading: backend and frontend
 * **Time of npm is ending** Don't like JS & npm in the stack
-* **Ops and Maintenance requirements have pilled up** increased expectations on dev-ops & observability (when self-hosting & managing)
+* **Ops and Maintenance requirements have piled up** increased expectations on dev-ops & observability (when self-hosting & managing)
 
 Not each project has the same needs and is confronted with all these problems. 
 If they sound familiar to you, though, you might like Arrower.
@@ -47,7 +47,7 @@ If they sound familiar to you, though, you might like Arrower.
     Instead of repeating technical concerns.
     For this Arrower already comes with batteries included for things like Operations (observability) and support
     (admin dashboard).
-    Increasing the time you sent on business logic vs. infrastructural concerns.  
+    Increasing the time you send on business logic vs. infrastructural concerns.  
 * **Developer comfort without fighting the framework.**
     Write more "clean" and "maintainable" code.
     Utilise helpers for common tasks.
@@ -57,24 +57,26 @@ If they sound familiar to you, though, you might like Arrower.
     and not mess with technical concerns where they would not be required and can be done via hypermedia.
     In no way will Arrower prevent this from you, 
     and if you need more interactivity you can include your favorite frontend framework like Angular, react, vue, or others.
-* **From single file to multiple teams.** 
+* **From single file to multiple teams.**
     Grow your codebase as the needs require it.
     Start simple side projects, prototype rapidly, or engineer a solid SaaS application with your colleagues.
     Focus on your domain.
+    Each context represents a DDD bounded context with its own routes, views, and database schema — keeping boundaries clean from day one, so splitting into services later is straightforward if the need arises.
 * **Simple where possible.**
-    Software is all about tradeofs,
+    Software is all about tradeoffs,
     Arrower chooses operation simplicity (monolith)
     and simple development concepts (hypermedia) over current trend of the decade. 
     If you want enterprise or microservices, you might be wrong.
     But in no way does Arrower intend to prevent you from doing so anyway.
 * **Encourage proven experience.** 
-    The Go community has always kept a high bar and prevent many bas habits to take root, e.g. 
+    The Go community has always kept a high bar and prevent many bad habits to take root, e.g. 
     insisting that a logger is a dependency and must not be part of a `ctx`.
-    Arrower encourages a compilation of best practices and experience that will help to write "good"
+    Arrower encourages a compilation of best practises and experience that will help to write "good"
     software.
 
 The goal is to keep up with innovation where the standard library does not, without patronising you.
-Be aware of your goals and architectural drivers, so you can design the think that solves the problem you actually have.
+Be aware of your goals and architectural drivers, 
+so you can design the thing that solves the problem you actually have.
 
 
 

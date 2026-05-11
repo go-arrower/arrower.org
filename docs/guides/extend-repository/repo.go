@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/go-arrower/arrower/repository"
+	"github.com/go-arrower/arrower/arepo"
 )
 
 type UserID int
@@ -20,7 +20,7 @@ func main() {
 
 	// highlight-next-line
 	_, err := repo.FindByLogin(context.Background(), "hello@arrower.org")
-	if err != nil && !errors.Is(err, repository.ErrNotFound) {
+	if err != nil && !errors.Is(err, arepo.ErrNotFound) {
 		panic(err)
 	}
 }
@@ -28,13 +28,13 @@ func main() {
 func NewUserMemoryRepository() *UserMemoryRepository {
 	return &UserMemoryRepository{
 		// highlight-next-line
-		MemoryRepository: repository.NewMemoryRepository[User, UserID](),
+		MemoryRepository: arepo.NewMemoryRepository[User, UserID](),
 	}
 }
 
 type UserMemoryRepository struct {
 	// highlight-next-line
-	*repository.MemoryRepository[User, UserID]
+	*arepo.MemoryRepository[User, UserID]
 }
 
 // FindByLogin implements a custom method, that is not supported by the Repository out of the box.
@@ -51,7 +51,7 @@ func (repo *UserMemoryRepository) FindByLogin(ctx context.Context, login string)
 		}
 	}
 
-	return User{}, repository.ErrNotFound
+	return User{}, arepo.ErrNotFound
 }
 
 // highlight-end

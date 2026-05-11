@@ -63,7 +63,7 @@ TODO
 
 
 ## Administrate Users
-If the Admin Context is sued you can
+If the Admin Context is used you can
 
 * List and manage all Users
 * Login as a User, for service and helpdesk purposes

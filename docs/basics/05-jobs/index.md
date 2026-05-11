@@ -221,7 +221,7 @@ Each queue can be configured with these optional options.
 | `WithPoolName`            | a random name        | Set the a name for this worker pool instance         |
 | `WithWorkerPollStrategy`  | PriorityPollStrategy | Set the  poll strategy                               |
 
-The queue is instrumented to give you [observability](./observability) out of the box. 
+The queue is instrumented to give you [observability](/docs/basics/observability) out of the box.
 You'll have logs, metrics, and traces available for you.
 
 

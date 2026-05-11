@@ -7,7 +7,7 @@ import (
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/google/uuid"
 
-	"github.com/go-arrower/arrower/repository"
+	"github.com/go-arrower/arrower/arepo"
 )
 
 type (
@@ -23,10 +23,10 @@ func main() {
 	dir := os.TempDir()
 
 	// highlight-start
-	store := repository.NewJSONStore(dir)
-	repo := repository.NewMemoryRepository[Entity, EntityID](
-		repository.WithStore(store),
-		repository.WithStoreFilename("Entity.json"), // optional, defaults to struct name + `.json`
+	store := arepo.NewJSONStore(dir)
+	repo := arepo.NewMemoryRepository[Entity, EntityID](
+		arepo.WithStore(store),
+		arepo.WithStoreFilename("Entity.json"), // optional, defaults to struct name + `.json`
 	)
 	// highlight-end
 

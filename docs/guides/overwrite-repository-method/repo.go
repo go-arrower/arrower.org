@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 
-	"github.com/go-arrower/arrower/repository"
+	"github.com/go-arrower/arrower/arepo"
 )
 
 type UserID int
@@ -26,13 +26,13 @@ func main() {
 func NewUserMemoryRepository() *UserMemoryRepository {
 	return &UserMemoryRepository{
 		// highlight-next-line
-		MemoryRepository: repository.NewMemoryRepository[User, UserID](),
+		MemoryRepository: arepo.NewMemoryRepository[User, UserID](),
 	}
 }
 
 type UserMemoryRepository struct {
 	// highlight-next-line
-	*repository.MemoryRepository[User, UserID]
+	*arepo.MemoryRepository[User, UserID]
 }
 
 // Count overwrites the existing Count method with your own implementation.

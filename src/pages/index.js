@@ -19,7 +19,7 @@ function HomepageHeader() {
             className="button button--secondary button--lg"
             to="/docs/getting-started"
           >
-            Getting Started️ with Arrower
+            Get Started
           </Link>
         </div>
       </div>

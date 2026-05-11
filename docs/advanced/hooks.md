@@ -11,7 +11,7 @@ Different projects have different needs and as the developer
 you might want to configure `arrower run` according to your application's situation.
 
 Hooks are a way to customise and extend the behaviour of `arrower run`,
-by registering different functions at specific points in the livecycle
+by registering different functions at specific points in the lifecycle
 of the command.
 
 As an example let's look at the devops situation: 
@@ -25,7 +25,7 @@ stack to your specific needs.
 
 
 ## Hooks
-The following hooks in the livecycle of the `arrower run` command can be
+The following hooks in the lifecycle of the `arrower run` command can be
 registered and used extend the behaviour of the cli.
 
 | Hook                              | Description                                                                                    |
@@ -43,7 +43,7 @@ to be able to develop your own hooks.
 * Hooks can customize the behaviour of `arrower run` in a flexible but still limited manner
 * Each hook is a file saved in the `.config` folder of the project.
 * All files matching the `*.hook.go` pattern are recognised as a hook
-* The loading of the hooks only happens ones at the startup of the cli command
+* The loading of the hooks only happens once at the startup of the cli command
 * Hooks are sorted by filename, so you can control the execution order
 * All methods block
 * Only imports from the standard library are possible
