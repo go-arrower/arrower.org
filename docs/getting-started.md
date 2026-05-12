@@ -61,6 +61,7 @@ myapp/
 ## Run It
 
 ```bash
+make dev-tools   # install migrate CLI, linters, dev dependencies
 arrower run
 ```
 

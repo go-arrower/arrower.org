@@ -56,11 +56,6 @@ Arrower offers a lot for your convenience, so you have a buffet to choose from,
 **not** as a recommendation to use all of them at all times!
 
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-<Tabs>
-  <TabItem value="entity" label="Entity Repository" default>
 ```go title="repository.go"
 type Repository[E any, ID id] interface {
     NextID(ctx context.Context) (ID, error)
@@ -71,10 +66,12 @@ type Repository[E any, ID id] interface {
     Delete(ctx context.Context, entity E) error
 
     All(ctx context.Context) ([]E, error)
+    AllBy(ctx context.Context, query q.Query) ([]E, error)
     AllByIDs(ctx context.Context, ids []ID) ([]E, error)
-    FindAll(ctx context.Context) ([]E, error)
+
     FindByID(ctx context.Context, id ID) (E, error)
-    FindByIDs(ctx context.Context, ids []ID) ([]E, error)
+    FindBy(ctx context.Context, query q.Query) (E, error)
+
     Exists(ctx context.Context, id ID) (bool, error)
     ExistsByID(ctx context.Context, id ID) (bool, error)
     ExistByIDs(ctx context.Context, ids []ID) (bool, error)
@@ -100,61 +97,8 @@ type Repository[E any, ID id] interface {
     Clear(ctx context.Context) error
 
     AllIter(ctx context.Context) Iterator[E, ID]
-    FindAllIter(ctx context.Context) Iterator[E, ID]
 }
 ```
-  </TabItem>
-  <TabItem value="tenant" label="Tenant Repository">
-```go title="tenant.repository.go"
-type TenantRepository[T any, tID id, E any, eID id] interface {
-    NextID(ctx context.Context, tenantID tID) (eID, error)
-    
-    Create(ctx context.Context, tenantID tID, entity E) error
-    Read(ctx context.Context, tenantID tID, id eID) (E, error)
-    Update(ctx context.Context, tenantID tID, entity E) error
-    Delete(ctx context.Context, tenantID tID, entity E) error
-    
-    All(ctx context.Context) ([]E, error)
-    AllOfTenant(ctx context.Context, tenantID tID) ([]E, error)
-    AllByIDs(ctx context.Context, tenantID tID, ids []eID) ([]E, error)
-    FindAll(ctx context.Context) ([]E, error)
-    FindAllOfTenant(ctx context.Context, tenantID tID) ([]E, error)
-    FindByID(ctx context.Context, tenantID tID, id eID) (E, error)
-    FindByIDs(ctx context.Context, tenantID tID, ids []eID) ([]E, error)
-    Exists(ctx context.Context, tenantID tID, id eID) (bool, error)
-    ExistsByID(ctx context.Context, tenantID tID, id eID) (bool, error)
-    ExistByIDs(ctx context.Context, tenantID tID, ids []eID) (bool, error)
-    ExistAll(ctx context.Context, tenantID tID, ids []eID) (bool, error)
-    Contains(ctx context.Context, tenantID tID, id eID) (bool, error)
-    ContainsID(ctx context.Context, tenantID tID, id eID) (bool, error)
-    ContainsIDs(ctx context.Context, tenantID tID, ids []eID) (bool, error)
-    ContainsAll(ctx context.Context, tenantID tID, ids []eID) (bool, error)
-    
-    Save(ctx context.Context, tenantID tID, entity E) error
-    SaveAll(ctx context.Context, tenantID tID, entities []E) error
-    UpdateAll(ctx context.Context, tenantID tID, entities []E) error
-    Add(ctx context.Context, tenantID tID, entity E) error
-    AddAll(ctx context.Context, tenantID tID, entities []E) error
-    
-    Count(ctx context.Context) (int, error)
-    CountOfTenant(ctx context.Context, tenantID tID) (int, error)
-    Length(ctx context.Context) (int, error)
-    LengthOfTenant(ctx context.Context, tenantID tID) (int, error)
-    Empty(ctx context.Context) (bool, error)
-    EmptyTenant(ctx context.Context, tenantID tID) (bool, error)
-    IsEmpty(ctx context.Context) (bool, error)
-    IsEmptyTenant(ctx context.Context, tenantID tID) (bool, error)
-    
-    DeleteByID(ctx context.Context, tenantID tID, id eID) error
-    DeleteByIDs(ctx context.Context, tenantID tID, ids []eID) error
-    DeleteAll(ctx context.Context) error
-    DeleteAllOfTenant(ctx context.Context, tenantID tID) error
-    Clear(ctx context.Context) error
-    ClearTenant(ctx context.Context, tenantID tID) error
-}
-```
-  </TabItem>
-</Tabs>
 
 
 
