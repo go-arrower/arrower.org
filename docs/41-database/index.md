@@ -42,10 +42,10 @@ To get you started, Arrower ships [ready-to-use CRUD repositories](/docs/databas
 with two clear extension points:
 
 * **Extend**: embed the repository and add your own domain-specific methods
-  (e.g. `FindByLogin`). See the [Extend a Repository](/docs/guides/extend-repository) guide.
+  (e.g. `FindByLogin`). See the [Extend a Repository](/docs/how-to-guide/extend-repository) guide.
 * **Overwrite**: embed the repository and replace any built-in method with your own
   implementation (e.g. a tuned `Count`). See the
-  [Overwrite a Repository Method](/docs/guides/overwrite-repository-method) guide.
+  [Overwrite a Repository Method](/docs/how-to-guide/overwrite-repository-method) guide.
 
 Both work the same way: embed `*arepo.PostgresRepository` (or the in-memory variant)
 in your own struct, then add or shadow methods as needed.

@@ -46,8 +46,8 @@ It is a design decision that you have to make for your application:
 how many generic methods and filters you 
 want to use versus how tailored to the domain should your repositories be?
 
-It is easy to [extend a repository with own methods](/docs/guides/extend-repository)
-or even to [change the behaviour of an existing method](/docs/guides/overwrite-repository-method).
+It is easy to [extend a repository with own methods](/docs/how-to-guide/extend-repository)
+or even to [change the behaviour of an existing method](/docs/how-to-guide/overwrite-repository-method).
 
 :::note[Keep your domain free of Arrower]
 

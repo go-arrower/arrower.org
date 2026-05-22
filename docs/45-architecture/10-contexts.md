@@ -1,5 +1,7 @@
 ---
 ---
+import DocCardList from '@theme/DocCardList';
+
 
 # Contexts
 
@@ -10,20 +12,12 @@ with its own routes, views, database schema, and dependencies.
 
 ## Available Contexts
 
-<DocCardList items={[
-{
+<DocCardList items={[{
 type: 'link',
 href: '/docs/architecture/auth',
 label: 'Auth Context',
 description: 'All things related to authentication.',
-},
-{
-type: 'link',
-href: '/docs/architecture/admin',
-label: 'Admin Context',
-description: 'A powerful out-of-the-box admin dashboard.',
-},
-]} />
+}]} />
 
 
 ## Context API
