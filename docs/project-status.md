@@ -1,5 +1,5 @@
 ---
-sidebar_position: 9
+sidebar_position: 90
 ---
 
 # Project Status
@@ -18,11 +18,11 @@ Arrower is under active development. This page tracks the maturity of each featu
 
 | Part                      | Phase          |
 |---------------------------|----------------|
-| Config                    | [Beta](/docs/basics/configuration)           |
-| Logging                   | [Beta](/docs/basics/observability/logging)   |
-| Testing helpers           | [Beta](/docs/basics/testing)                 |
-| Repository pattern        | [Beta](/docs/basics/database/repository)     |
-| Jobs                      | [Beta](/docs/basics/jobs)                    |
+| Config                    | [Beta](/docs/configuration-operations/configuration)           |
+| Logging                   | [Beta](/docs/configuration-operations/observability/logging)   |
+| Testing helpers           | [Beta](/docs/testing)                 |
+| Repository pattern        | [Beta](/docs/database/repository)     |
+| Jobs                      | [Beta](/docs/background-processing)                    |
 | Database & migrations     | Experimenting                          |
 
 ## Infrastructure
@@ -40,7 +40,7 @@ Arrower is under active development. This page tracks the maturity of each featu
 
 | Context       | Phase          |
 |---------------|----------------|
-| Auth          | [Alpha](/docs/context/auth)                |
+| Auth          | [Alpha](/docs/architecture/auth)                |
 | Admin         | Alpha                |
 
 ## CLI

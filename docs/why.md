@@ -47,7 +47,7 @@ If they sound familiar to you, though, you might like Arrower.
     Instead of repeating technical concerns.
     For this Arrower already comes with batteries included for things like Operations (observability) and support
     (admin dashboard).
-    Increasing the time you send on business logic vs. infrastructural concerns.  
+    Increasing the time you spend on business logic vs. infrastructural concerns.  
 * **Developer comfort without fighting the framework.**
     Write more "clean" and "maintainable" code.
     Utilise helpers for common tasks.

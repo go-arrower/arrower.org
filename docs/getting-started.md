@@ -11,7 +11,7 @@ See the [project status](/docs/project-status) for details.
 
 ## Prerequisites
 
-- Go 1.23+
+- Go 1.25+
 - Docker (for Postgres and observability stack)
 - Node.js (for frontend assets)
 
@@ -89,8 +89,8 @@ Out of the box your app comes with:
 
 Explore the features you'll use in every project:
 
-- [Jobs](/docs/basics/jobs) - background processing with transactional enqueuing, scheduling, and retries
-- [Repository](/docs/basics/database/repository) - generic repository pattern with in-memory and Postgres implementations
-- [Logging](/docs/basics/observability/logging) - structured logging with runtime configuration
-- [Testing](/docs/basics/testing) - integration test helpers and semantic assertions
-- [Config](/docs/basics/configuration) - extend Arrower's config for your application
+- [Jobs](/docs/background-processing) - background processing with transactional enqueuing, scheduling, and retries
+- [Repository](/docs/database/repository) - generic repository pattern with in-memory and Postgres implementations
+- [Logging](/docs/configuration-operations/observability/logging) - structured logging with runtime configuration
+- [Testing](/docs/testing) - integration test helpers and semantic assertions
+- [Config](/docs/configuration-operations/configuration) - extend Arrower's config for your application

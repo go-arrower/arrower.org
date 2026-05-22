@@ -1,0 +1,6 @@
+---
+draft: true
+---
+
+
+# Static Assets

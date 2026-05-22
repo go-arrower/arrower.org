@@ -20,7 +20,7 @@ the access to a data store.
 It is commonly used in enterprise software, and many Go developers 
 use it in their applications.
 
-[Arrower provides a flexible repository implementation](/docs/basics/database/repository) 
+[Arrower provides a flexible repository implementation](/docs/database/repository)
 despite the limited abstractions Go offers.
 
 
@@ -47,7 +47,7 @@ how many generic methods and filters you
 want to use versus how tailored to the domain should your repositories be?
 
 It is easy to [extend a repository with own methods](/docs/guides/extend-repository)
-or even to [change the behaviour of an existing method](/docs/guides/overwrite-repository-method). 
+or even to [change the behaviour of an existing method](/docs/guides/overwrite-repository-method).
 
 :::note[Keep your domain free of Arrower]
 

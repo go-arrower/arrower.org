@@ -262,11 +262,11 @@ func TestNew(t *testing.T) {
 #### Avoid Mocks
 Prevent the use of mocks, as they make testing complicated and cumbersome
 ⇒ Use real implementations like in memory implementations instead,
-see [Repository testing helpers](/docs/basics/database/repository#testing) or [Queue](/docs/basics/jobs#testing)
+see [Repository testing helpers](/docs/database/repository#testing) or [Queue](/docs/background-processing#testing)
 
 Ideas to consider when testing more complicated things before reaching for a mock:
 * If testing a network service, start a copy of the service locally and open a proper network connection
-* Use integration tests (against [running docker containers](/docs/basics/testing#integration-testing))
+* Use integration tests (against [running docker containers](/docs/testing#integration-testing))
 * (todo) See Subprocessing of Hashicorp
 
 
