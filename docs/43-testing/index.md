@@ -1,119 +1,151 @@
 ---
 ---
+import PyramidSvg from './pyramid.svg';
 
 
 
 
 # Testing
 ## Testing Backed in From the Get-Go
-<ul>
-    <li>✅ Unit - all packages come with unit testing abilities</li>
-    <li>⏳ Integration - helpers to make your integration tests easier</li>
-    <li>💤 E2E</li>
-    <li>💤 UI</li>
-    <li>Manual - always left to you</li>
-</ul>
 
-## Convention
-All packages provide helpers to make testing easy
-* Constructors for regular logic start with `New`
-* Constructors for tests start with `Test`. 
-  Returning objects that assist your code in being tested well.
+<div style={{display: 'flex', alignItems: 'flex-start', gap: '2rem'}}>
+<div style={{flex: 1}}>
 
+- **Manual**: Always in your hands. No opinions here.
+- **UI**: 💤 Not planned, use Playwright or Cypress.
+- **E2E**: Full end-to-end flows. [See E2E Testing](/docs/testing/e2e)
+- **Integration**: Spin up any dependency in Docker: Postgres, S3, you name it. Isolated per test, fixture seeding, runs in parallel.
+- **Unit**: Every package testable out of the box. Semantic assertions for Repos, Queues, Logs. No mocking required.
+
+</div>
+<div style={{flex: 1, textAlign: 'right'}}>
+
+<PyramidSvg />
+
+</div>
+</div>
+
+
+## Unit Testing
+All packages follow the same convention:
+* **`New*`**: production constructors
+* **`Test*`**: test constructors, returning in-memory implementations with built-in assertions
+
+```go
+// Production
+repo := arepo.NewPostgresRepository[User, UserID](pgx)
+logger := alog.New()
+queue := jobs.New(pgx)
+
+// Test
+repo := arepo.Test[User, UserID](t)
+logger := alog.Test(t)
+queue := jobs.Test(t)
+```
+
+Every `Test*` constructor returns an object you inject like the real thing.
+Assertions follow the [stretchr/testify](https://github.com/stretchr/testify) pattern: return `bool`, accept `msgAndArgs`.
+For more packages, also see [Use Cases](/docs/architecture/usecases#testing).
 
 ### Semantic Assertions
-Many packages come with specialised test helpers and assertions.
-These can be used in combination with the assertions from 
-[stretchr/testify](https://github.com/stretchr/testify) 
-and the Go standard library.
+Each package provides purpose-built assertions for its domain.
 
-| [Repository](/docs/database/repository#testing) | [Queue](/docs/background-processing#testing) | [Logger](/docs/configuration-operations/observability/logging#testing) | Renderer | Database |
-|--------------------------------------------------------|------------------------------------|------------------------------------------------------|----------|----------|
-| Empty ✅                                                | Empty ✅                            | Empty ✅                                              |          |          |
-| NotEmpty ✅                                             | NotEmpty ✅                         | NotEmpty ✅                                           |          |          |
-| Total ✅                                                | Total ✅                            | Total ✅                                              |          |          |
-| Contains                                               | Contains ✅                         | Contains ✅                                           |          |          |
-| NotContains                                            | NotContains ✅                      | NotContains ✅                                        |          |          |
-|                                                        |                                    |                                                      |          |          |
-| HasEntity (?)                                          | HasJob (?)                         | HasLine (?)                                          |          |          |
-| HasNotEntity (?)                                       | HasNotJob (?)                      | NasNotLine (?)                                       |          |          |
-|                                                        | Jobs ✅                             | Lines ✅                                              |          |          | 
-|                                                        | GetFirst ✅                         | String ✅                                             |          |          |
-|                                                        | Get ✅                              |                                                      |          |          |          |
-|                                                        | GetFirstOf✅                        |                                                      |          | 
-|                                                        | GetOf ✅                            |                                                      |          |          |
-|                                                        | Reset (?)                          |                                                      |          |          |
-|                                                        |                                    |                                                      |          |          |
+| | [Repository](/docs/database/repository#testing) | [Queue](/docs/background-processing#testing) | [Logger](/docs/configuration-operations/observability/logging#testing) | Renderer |
+|---|---|---|---|---|
+| Empty | ✅ | ✅ | ✅ | 💤 |
+| NotEmpty | ✅ | ✅ | ✅ | ✅ |
+| Total | ✅ | ✅ | ✅ | 💤 |
+| Contains | 💤 | ✅ | ✅ | ✅ |
+| NotContains | 💤 | ✅ | ✅ | 💤 |
 
+#### Example - Use Case with Queue
+```go
+func TestRegisterUserEnqueuesWelcomeEmail(t *testing.T) {
+    t.Parallel()
 
+    repo := arepo.Test[User, UserID](t)
+    q := jobs.Test(t)
 
+    handler := NewRegisterUserRequestHandler(repo, q)
 
-## Integration Testing
-Sometimes you don't want to test against an in-memory implementation and need to see if your application behaves 
-correctly against the real database.
+    _, err := handler.H(t.Context(), RegisterUserRequest{Email: "alice@example.com"})
+    assert.NoError(t, err)
 
-This pattern spins up a postgres database inside a docker container and removes the container after the test has 
-finished automatically.
-The `NewTestDatabase` method will ensure you can safely run all tests in parallel by:
-* Creating a new randomly named database for each test case
-* Performing schema migration
-* Seeding the database with test data
+    q.NotEmpty()
+    q.Total(1)
+    q.Contains(SendWelcomeEmailJob{Email: "alice@example.com"})
 
-The testdata is seeded with the project [testfixtures](https://github.com/go-testfixtures/testfixtures)
-and if an file `testdata/fixtures/_common.yaml` exists it is automatically loaded. For additional data per test case
-take a look at [multiple tables in one file](https://github.com/go-testfixtures/testfixtures#-single-file-on-multiple-tables)
-
-```go title="integration_test.go"
-//go:build integration
-
-package yourpackage_test
-
-var pgHandler *tests.PostgresDocker
-
-func TestMain(m *testing.M) {
-	pgHandler = tests.GetPostgresDockerForIntegrationTestingInstance()
-
-	//
-	// Run tests
-	code := m.Run()
-
-	pgHandler.Cleanup()
-	os.Exit(code)
-}
-
-func TestSomething(t *testing.T) {
-	t.Parallel()
-
-	pg := pgHandler.NewTestDatabase()
-
-	// use pg to initialise your test dependencies like a postgres repository 
-}
-
-func TestSomethingOther(t *testing.T) {
-	t.Parallel()
-
-	// load multiple additional test fixture files to seed the database
-	pg := pgHandler.NewTestDatabase([]string{
-		"testdata/fixtures/something-other-user.yaml",
-		"testdata/fixtures/something-other-posts.yaml",
-    })
-	
-	_ = pg.PGx() // direct access to the pgx connection pool 
+    // Queue-specific helpers: inspect jobs without consuming them
+    job := q.GetFirst()
+    assert.Equal(t, "alice@example.com", job.(SendWelcomeEmailJob).Email)
 }
 ```
 
-The `PrepareDatabase` method is similar to `NewTestDatabase` but does not create a new database
-but cleans the existing database! 
-- All data is truncated
-- It cannot be used in parallel
+#### Example - Use Case with Logger
+```go
+func TestLoginLogsAttempt(t *testing.T) {
+    t.Parallel()
 
-If you depend on other services for your testing use the `tests.StartDockerContainer` helper to start any service 
-inside a docker container.
-Check out the `tests.GetPostgresDockerForIntegrationTestingInstance` to see it in action for the testing against a postgres
-database as shown above.
+    logger := alog.Test(t)
+
+    handler := NewLoginRequestHandler(logger)
+
+    _, err := handler.H(t.Context(), LoginRequest{Email: "alice@example.com"})
+    assert.NoError(t, err)
+
+    logger.Contains("login attempt")
+    logger.Total(1)
+
+    // Logger-specific helpers: inspect the full log output
+    logger.Lines()  // []string of all log lines
+    logger.String() // full output as string
+}
+```
+
+#### Example - Renderer
+```go
+func TestRenderProfilePage(t *testing.T) {
+    t.Parallel()
+
+    r, err := renderer.Test(t, viewsFS, nil)
+    require.NoError(t, err)
+
+    var buf bytes.Buffer
+    assertions, err := r.Render(&buf, "profile", "show.html", data)
+    require.NoError(t, err)
+
+    assertions.NotEmpty()
+    assertions.Contains("<h1>Alice</h1>")
+}
+```
 
 
-### Docker Images for Integration Testing
-Arrower ships all images you would need to operate and test a setup. 
-See [Alternatives](/docs/background-processing/alternatives#postgres-image-with-pg_cron) on how to use the postgres image with a
-preinstalled `pg_cron` extension already
+## Integration Testing
+Test against real infrastructure, not mocks.
+
+`tests.StartDockerContainer` spins up any service: Postgres, S3, Redis, anything Docker supports.
+Containers start with retry logic and clean up after tests.
+
+```go
+cleanup, err := tests.StartDockerContainer(
+    &dockertest.RunOptions{
+        Repository: "minio/minio",
+        Tag:        "latest",
+        Env:        []string{"MINIO_ROOT_USER=test", "MINIO_ROOT_PASSWORD=testtest"},
+    },
+    func(resource *dockertest.Resource) func() error {
+        return func() error {
+            // retry connecting until the service is ready
+            return nil
+        }
+    },
+)
+require.NoError(t, err)
+defer cleanup()
+```
+
+**Postgres Integration**
+
+Arrower provides a dedicated helper for Postgres with parallel-safe test databases,
+automatic migrations, and fixture seeding.
+See [Repository Testing](/docs/database/repository#testing).

@@ -1,0 +1,42 @@
+<svg viewBox="0 0 560 450" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+
+  <!-- Background -->
+  <rect width="560" height="450" fill="#f0f4f8" rx="16"/>
+
+  <!-- Title -->
+  <text x="280" y="38" text-anchor="middle" font-size="20" font-weight="bold" fill="#2d3748">Software Testing Pyramid</text>
+
+  <!-- Layer 4: Unit Tests (bottom trapezoid) -->
+  <polygon points="95,335 465,335 530,430 30,430" fill="#68d391" stroke="#276749" stroke-width="1.5"/>
+
+  <!-- Layer 3: Integration Tests -->
+  <polygon points="157,245 403,245 465,335 95,335" fill="#f6ad55" stroke="#dd6b20" stroke-width="1.5"/>
+
+  <!-- Layer 2: E2E Tests -->
+  <polygon points="218,155 342,155 403,245 157,245" fill="#fc8181" stroke="#e53e3e" stroke-width="1.5"/>
+
+  <!-- Layer 1: UI Tests (top triangle) -->
+  <polygon points="280,65 342,155 218,155" fill="#b794f4" stroke="#6b46c1" stroke-width="1.5"/>
+
+  <!-- Divider lines -->
+  <line x1="218" y1="155" x2="342" y2="155" stroke="white" stroke-width="2"/>
+  <line x1="157" y1="245" x2="403" y2="245" stroke="white" stroke-width="2"/>
+  <line x1="95"  y1="335" x2="465" y2="335" stroke="white" stroke-width="2"/>
+
+  <!-- UI Tests -->
+  <text x="280" y="108" text-anchor="middle" font-size="12" font-weight="bold" fill="#3b1f6e">UI Tests</text>
+  <text x="280" y="123" text-anchor="middle" font-size="10" fill="#3b1f6e">Visual · Fragile</text>
+
+  <!-- E2E Tests -->
+  <text x="280" y="193" text-anchor="middle" font-size="13" font-weight="bold" fill="#742a2a">E2E Tests</text>
+  <text x="280" y="210" text-anchor="middle" font-size="10" fill="#742a2a">Full Flow · Slow · Expensive</text>
+
+  <!-- Integration Tests -->
+  <text x="280" y="283" text-anchor="middle" font-size="13" font-weight="bold" fill="#7b341e">Integration Tests</text>
+  <text x="280" y="300" text-anchor="middle" font-size="10" fill="#7b341e">Components · Medium Speed</text>
+
+  <!-- Unit Tests -->
+  <text x="280" y="373" text-anchor="middle" font-size="14" font-weight="bold" fill="#1c4532">Unit Tests</text>
+  <text x="280" y="391" text-anchor="middle" font-size="10" fill="#1c4532">Fast · Isolated · Most</text>
+
+</svg>
