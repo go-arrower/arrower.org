@@ -1,4 +1,5 @@
 ---
+slug: /how-to-guide/cron
 ---
 import CodeBlock from '@theme/CodeBlock';
 import File from '!!raw-loader!./cron.go';

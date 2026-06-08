@@ -1,4 +1,5 @@
 ---
+slug: /how-to-guide/persist-inmemory-repository
 ---
 import CodeBlock from '@theme/CodeBlock';
 import File0 from '!!raw-loader!./save/repo.go';

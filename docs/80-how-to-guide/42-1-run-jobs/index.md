@@ -1,4 +1,5 @@
 ---
+slug: /how-to-guide/run-jobs
 ---
 import CodeBlock from '@theme/CodeBlock';
 import File from '!!raw-loader!./run-job.go';

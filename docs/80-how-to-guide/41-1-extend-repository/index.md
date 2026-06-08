@@ -1,4 +1,5 @@
 ---
+slug: /how-to-guide/extend-repository
 ---
 import CodeBlock from '@theme/CodeBlock';
 import File from '!!raw-loader!./repo.go';

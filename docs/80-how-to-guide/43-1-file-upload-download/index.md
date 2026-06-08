@@ -1,5 +1,6 @@
 ---
 title: Test File Upload & Download
+slug: /how-to-guide/file-upload-download
 ---
 
 # Test File Upload & Download
