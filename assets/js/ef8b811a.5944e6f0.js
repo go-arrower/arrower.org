@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkarrower_org=globalThis.webpackChunkarrower_org||[]).push([[1328],{6600(r){r.exports=JSON.parse('{"authors":[{"name":"H","title":"Creator of Arrower","url":"https://github.com/go-arrower","key":"arrower","page":null,"count":1}]}')}}]);
