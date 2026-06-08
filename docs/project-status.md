@@ -23,6 +23,7 @@ Arrower is under active development. This page tracks the maturity of each featu
 | Testing helpers           | [Beta](/docs/testing)                 |
 | Repository pattern        | [Beta](/docs/database/repository)     |
 | Jobs                      | [Beta](/docs/background-processing)                    |
+| E2E testing               | [Beta](/docs/testing/e2e)        |
 | Database & migrations     | Experimenting                          |
 
 ## Infrastructure
@@ -59,7 +60,6 @@ Arrower is under active development. This page tracks the maturity of each featu
 | Startup & Lifecycle       | Not Started    |
 | Prod & Dev modes          | Not Started    |
 | App CLI commands          | Not Started    |
-| E2E testing               | Not Started    |
 | Frontend pipeline         | Not Started    |
 | Events                    | Not Started    |
 | Emails                    | Conceptual     |
